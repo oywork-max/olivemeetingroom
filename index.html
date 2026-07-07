@@ -423,7 +423,7 @@
         function updateLine(a, i, val) { state.contents[a][i].text = val; save(); }
 
         function getRawReport() {
-            let res = `📝 [회의록] ${state.title || '정기 미팅'}\n`;
+            let res = `📝 [회의록] ${state.title || '중례'}\n`;
             res += `일시: ${document.getElementById('meet-date').value.replace('T',' ')}\n`;
             res += `참석자: ${state.members.length > 0 ? state.members.join(', ') : '-'}\n`;
             res += `--------------------------\n`;
@@ -465,7 +465,17 @@
             }
         }
 
-        function downloadAsPNG() {
+function downloadAsPNG() {
+            // [업데이트] 오늘 날짜 8자리 생성 로직 추가
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const todayStr = `${yyyy}${mm}${dd}`; 
+
+            // 제목이 공백이면 오늘 날짜 8자리(YYYYMMDD)를 파일명으로 사용
+            const fileName = state.title ? state.title.trim() : todayStr;
+
             const target = document.getElementById('capture-area');
             html2canvas(target, {
                 scale: 2, 
@@ -473,7 +483,7 @@
                 useCORS: true
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `회의록_${state.title || '미팅데이터'}.png`;
+                link.download = `회의록_${fileName}.png`;
                 link.href = canvas.toDataURL('image/png');
                 document.body.appendChild(link);
                 link.click();
