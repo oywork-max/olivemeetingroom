@@ -1,6 +1,6 @@
 {
   "name": "올리브 미팅룸",
-  "short_name": "OY-meet",
+  "short_name": "올리브미팅룸",
   "description": "회의 공유, 회의록 작성을 위한 Tool",
   "start_url": "./index.html",
   "display": "standalone",
