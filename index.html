@@ -37,7 +37,6 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, system-ui, sans-serif; }
         
-        /* [PC 최적화 변경] 가로 폭을 화면 크기에 맞게 95% 유연하게 확장 (최대 1200px) */
         body { 
             background-color: var(--bg-primary); 
             color: var(--text-primary); 
@@ -104,7 +103,6 @@
         .agenda-write-card { border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 12px; background: var(--bg-primary); }
         .agenda-write-card h3 { font-size: 0.95rem; color: var(--color-olive); margin-bottom: 8px; }
         
-        /* [PC 최적화 변경] 입력 행 그룹이 부모 너비를 100% 꽉 채우도록 설정 */
         .line-input-group { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 8px; background: var(--bg-card); padding: 4px; border-radius: 8px; transition: all 0.2s ease; width: 100%; }
         .line-input-group.indent { padding-left: 24px; background: transparent; }
         .line-input-group textarea { flex: 1; min-height: 48px; height: auto; padding: 6px 8px; line-height: 1.4; font-size: 0.9rem; }
@@ -117,14 +115,31 @@
         .all-select-wrap input { width: 16px !important; height: 16px !important; accent-color: var(--color-olive); cursor: pointer; }
 
         .capture-wrapper { background: var(--bg-card); padding: 4px; border-radius: 10px; }
-        .result-view { white-space: pre-wrap; background: var(--input-bg); padding: 16px; border-radius: 10px; border: 1px solid var(--border-color); line-height: 1.6; font-size: 0.9rem; color: #222222; }
         
+        /* [수정] color 규칙을 고정값 대신 변수(var(--text-primary))로 연동 */
+        .result-view { white-space: pre-wrap; background: var(--input-bg); padding: 16px; border-radius: 10px; border: 1px solid var(--border-color); line-height: 1.6; font-size: 0.9rem; color: var(--text-primary); }
+        
+        /* [추정/추가] 다크모드 대응 결과창 내부 글자 색상 명시 */
+        [data-theme="dark"] .result-view { color: #f5f5f0; }
+
+        /* [추가] 캡처 전용 강제 라이트모드 타겟팅 스타일 */
+        .forced-light {
+            --bg-card: #ffffff !important;
+            --input-bg: #f4f4f0 !important;
+            --text-primary: #222222 !important;
+            --border-color: #e5e5e0 !important;
+        }
+        .forced-light .result-view {
+            color: #222222 !important;
+            background: #f4f4f0 !important;
+            border-color: #e5e5e0 !important;
+        }
+
         .hidden { display: none !important; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         .mt-10 { margin-top: 10px; }
         .mt-12 { margin-top: 12px; }
 
-        /* [PC 최적화 변경] 모바일 스크린 환경(640px 이하)에서는 원래의 앱 규격 레이아웃으로 컴팩트하게 전환 */
         @media (max-width: 640px) {
             body {
                 max-width: 100%;
@@ -147,7 +162,6 @@
         <div class="step-bar" id="bar-4"></div>
     </div>
 
-    <!-- [STEP 1] 설정 페이지 -->
     <div id="step-setup">
         <div class="card">
             <h2>기본 정보</h2>
@@ -188,7 +202,6 @@
         </div>
     </div>
 
-    <!-- [STEP 2] 안건 선택 페이지 -->
     <div id="step-select" class="hidden">
         <div class="card">
             <div class="card-header-flex">
@@ -206,7 +219,6 @@
         </div>
     </div>
 
-    <!-- [STEP 3] 실시간 작성 페이지 -->
     <div id="step-write" class="hidden">
         <div class="card">
             <h2>회의 진행 기록</h2>
@@ -218,7 +230,6 @@
         </div>
     </div>
 
-    <!-- [STEP 4] 결과 페이지 -->
     <div id="step-result" class="hidden">
         <div class="card">
             <h2>최종 회의록</h2>
@@ -463,13 +474,21 @@
             }
         }
 
+        /* [수정] 캡처 전용 화이트/라이트 모드 강제 토글 로직 구현 완료 */
         function downloadAsPNG() {
-            const target = document.getElementById('capture-area');
-            html2canvas(target, {
+            const wrapper = document.getElementById('capture-area');
+            
+            // 1. html2canvas 촬영 전, 라이트모드 스타일 강제 클래스 부여
+            wrapper.classList.add('forced-light');
+
+            html2canvas(wrapper, {
                 scale: 2, 
-                backgroundColor: document.documentElement.getAttribute('data-theme') === 'dark' ? '#1e1e1b' : '#ffffff',
+                backgroundColor: '#ffffff', // 이미지 배경색을 무조건 흰색으로 강제 고정
                 useCORS: true
             }).then(canvas => {
+                // 2. 캡처 직후 스타일 원상 복구 (유저 화면 깜빡임 차단)
+                wrapper.classList.remove('forced-light');
+
                 const link = document.createElement('a');
                 link.download = `회의록_${state.title || '미팅데이터'}.png`;
                 link.href = canvas.toDataURL('image/png');
@@ -477,6 +496,7 @@
                 link.click();
                 document.body.removeChild(link);
             }).catch(err => {
+                wrapper.classList.remove('forced-light'); // 에러 시에도 안전하게 클래스 제거
                 alert('이미지 생성 실패. 다시 시도해 주세요.');
                 console.error(err);
             });
