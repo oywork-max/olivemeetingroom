@@ -432,7 +432,7 @@
         function updateLine(a, i, val) { state.contents[a][i].text = val; save(); }
 
         function getRawReport() {
-            let res = `📝 [회의록] ${state.title || '정기 미팅'}\n`;
+            let res = `📝 [회의록] ${state.title || '중례'}\n`;
             res += `일시: ${document.getElementById('meet-date').value.replace('T',' ')}\n`;
             res += `참석자: ${state.members.length > 0 ? state.members.join(', ') : '-'}\n`;
             res += `--------------------------\n`;
