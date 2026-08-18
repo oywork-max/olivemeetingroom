@@ -47,6 +47,60 @@
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
+        /* [추가] 라임 & 코랄 테마 (#82DC28, #FF7878) */
+        [data-theme="neon"] {
+            --bg-body: #F7FAF5;
+            --bg-card: #FFFFFF;
+            --text-main: #2A3622;
+            --text-muted: #7E8C73;
+            --border-color: #D3F1B8;
+            --input-bg: #F2F8ED;
+            
+            --color-primary: #82DC28;
+            --color-primary-dark: #6BB521;
+            --color-accent: #FF7878;
+            
+            --shadow-sm: 0 2px 8px rgba(130, 220, 40, 0.1);
+            --shadow-md: 0 8px 16px -4px rgba(130, 220, 40, 0.15);
+            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        /* [추가] 연보라 & 핑크 테마 */
+        [data-theme="purple"] {
+            --bg-body: #F8F6FA;
+            --bg-card: #FFFFFF;
+            --text-main: #332A3B;
+            --text-muted: #8B8096;
+            --border-color: #E7E1EE;
+            --input-bg: #F9F8FC;
+            
+            --color-primary: #AD8CEB;
+            --color-primary-dark: #8F6DCB;
+            --color-accent: #FF94B8;
+            
+            --shadow-sm: 0 2px 8px rgba(173, 140, 235, 0.1);
+            --shadow-md: 0 8px 16px -4px rgba(173, 140, 235, 0.15);
+            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        /* [추가] 블루 & 그레이 테마 */
+        [data-theme="blue"] {
+            --bg-body: #F4F6F9;
+            --bg-card: #FFFFFF;
+            --text-main: #242D38;
+            --text-muted: #7A899C;
+            --border-color: #E2E8F0;
+            --input-bg: #F8FAFC;
+            
+            --color-primary: #5C8AE6;
+            --color-primary-dark: #446BC0;
+            --color-accent: #7A899C;
+            
+            --shadow-sm: 0 2px 8px rgba(92, 138, 230, 0.1);
+            --shadow-md: 0 8px 16px -4px rgba(92, 138, 230, 0.15);
+            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, system-ui, sans-serif; }
         
         body { 
@@ -217,12 +271,9 @@
         .btn-tree-toggle { background: none; border: none; color: var(--text-muted); padding: 10px 4px; cursor: pointer; font-size: 1rem; width: 24px; transition: color 0.2s;}
         .btn-tree-toggle:hover { color: var(--color-primary); }
         
-        .line-controls-right { display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 6px; padding: 4px 2px; }
-        .btn-del-line { background: none; border: none; color: var(--text-muted); padding: 4px; cursor: pointer; font-size: 1rem; transition: color 0.2s; }
+        .line-controls-right { display: flex; align-items: center; padding: 0 4px; }
+        .btn-del-line { background: none; border: none; color: var(--text-muted); padding: 8px; cursor: pointer; font-size: 1.1rem; transition: color 0.2s; }
         .btn-del-line:hover { color: var(--color-accent); }
-        .drag-handle { color: var(--text-muted); cursor: grab; font-size: 1.1rem; padding: 4px; touch-action: none; opacity: 0.5; transition: opacity 0.2s; }
-        .drag-handle:hover { opacity: 1; color: var(--color-primary); }
-        .drag-handle:active { cursor: grabbing; }
         
         .btn-insert-below { 
             text-align: center; color: var(--color-primary); cursor: pointer; margin: -8px 0 2px 0; z-index: 10; position: relative; 
@@ -232,9 +283,6 @@
         .btn-insert-below:active { transform: scale(1.2); }
         .btn-insert-below i { background: var(--bg-card); padding: 2px 10px; border-radius: 8px; border: 2px solid var(--border-color); color: var(--text-muted); }
         .btn-insert-below i:hover { color: var(--color-primary); border-color: var(--color-primary); }
-
-        .line-input-group.dragging { opacity: 0.4; border: 2px dashed var(--color-primary); background: var(--bg-card); }
-        .line-input-group.drag-over { border-top: 3px solid var(--color-primary); }
 
         .all-select-wrap { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; color: var(--text-muted); }
 
@@ -288,13 +336,18 @@
         .modal-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
         .modal-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
         .modal-actions { display: flex; gap: 8px; }
+
+        /* [추가] 테마 선택 리스트 버튼 디자인 */
+        .theme-color-preview { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
+        .theme-list-btn { margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 2px solid transparent; background: var(--input-bg); color: var(--text-main); font-weight: 600; padding: 12px 16px;}
+        .theme-list-btn:hover { border-color: var(--color-primary); }
     </style>
 </head>
 <body>
 
     <header>
-        <h1><i></ㅑ>OLIVE <span>Meeting Room</span></i></h1>
-        <button class="btn-outline btn-small" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i> 테마</button>
+        <h1><i>OLIVE <span>Meeting Room</span></i></h1>
+        <button class="btn-outline btn-small" onclick="openThemeModal()"><i class="fa-solid fa-palette"></i> 테마</button>
     </header>
 
     <div class="step-indicator">
@@ -313,7 +366,7 @@
             <h2>기본 정보</h2>
             <div class="form-group">
                 <label>회의 제목</label>
-                <input type="text" id="meet-title" placeholder="예: 이 달의 중례">
+                <input type="text" id="meet-title" placeholder="예: 주간 회의">
             </div>
             <div class="form-group">
                 <label>회의 일시</label>
@@ -389,7 +442,7 @@
 
             <div class="mt-20">
                 <button class="btn btn-primary" onclick="shareToSlack()" style="padding: 18px; font-size: 1.05rem;">
-                   <i class="fa-brands fa-slack"></i> Slack 으로 전송하기 (모바일전용)
+                    <i class="fa-brands fa-slack"></i> Slack 앱으로 전송하기 (모바일 전용)
                 </button>
             </div>
 
@@ -419,18 +472,38 @@
         </div>
     </div>
 
+    <!-- [추가] 테마 선택 모달 -->
+    <div class="modal-overlay" id="theme-modal">
+        <div class="modal-card">
+            <div class="modal-title">테마 설정</div>
+            <div class="modal-desc" style="margin-bottom: 16px;">원하는 컬러 테마를 선택하세요.</div>
+            <div class="theme-list" style="display:flex; flex-direction:column;">
+                <button class="btn btn-small theme-list-btn" onclick="setTheme('light')"><span>🍵 올리브 (기본)</span> <div class="theme-color-preview" style="background:#8CA372;"></div></button>
+                <button class="btn btn-small theme-list-btn" onclick="setTheme('dark')"><span>🌙 다크 모드</span> <div class="theme-color-preview" style="background:#2D332A;"></div></button>
+                <button class="btn btn-small theme-list-btn" onclick="setTheme('neon')"><span>🥝 라임 & 코랄</span> <div class="theme-color-preview" style="background:#82DC28;"></div></button>
+                <button class="btn btn-small theme-list-btn" onclick="setTheme('purple')"><span>🍇 연보라 & 핑크</span> <div class="theme-color-preview" style="background:#AD8CEB;"></div></button>
+                <button class="btn btn-small theme-list-btn" style="margin-bottom:20px;" onclick="setTheme('blue')"><span>🧊 파랑 & 그레이</span> <div class="theme-color-preview" style="background:#5C8AE6;"></div></button>
+            </div>
+            <button class="btn btn-primary" onclick="closeThemeModal()">닫기</button>
+        </div>
+    </div>
+
     <script>
         let state = {
             title: "", date: "", 
             members: [], 
-            agendas: ["프로젝트 진척상황 공유", "이슈 및 리스크 논의"],
+            agendas: ["전사전략방향", "공유사항"],
             selected: [],
             contents: {}
         };
 
-        let dragInfo = null;
-
         window.onload = () => {
+            // [추가] 저장된 테마 불러오기
+            const savedTheme = localStorage.getItem('olive_pwa_theme');
+            if(savedTheme && savedTheme !== 'light') {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+
             const saved = localStorage.getItem('olive_pwa_data_v5_clay');
             if(saved) state = JSON.parse(saved);
             renderSetup();
@@ -607,20 +680,13 @@
                             ${arr.map((item, i) => {
                                 const isParent = (i < arr.length - 1 && arr[i+1].indent && !item.indent);
                                 return `
-                                    <div class="line-input-group ${item.indent ? 'indent' : ''} ${isParent ? 'is-parent' : ''}"
-                                         draggable="true"
-                                         ondragstart="handleDragStart(event, '${a}', ${i})"
-                                         ondragover="handleDragOver(event)"
-                                         ondragleave="handleDragLeave(event)"
-                                         ondrop="handleDrop(event, '${a}', ${i})"
-                                         ondragend="handleDragEnd(event)">
+                                    <div class="line-input-group ${item.indent ? 'indent' : ''} ${isParent ? 'is-parent' : ''}">
                                         <button class="btn-tree-toggle" onclick="toggleTreeIndent('${a}', ${i})" title="하위 항목으로 변경">
                                             <i class="fa-solid ${item.indent ? 'fa-angle-right' : 'fa-list-ul'}"></i>
                                         </button>
                                         <textarea placeholder="${item.indent ? '세부 내용을 입력하세요' : '주요 내용을 입력하세요'}" oninput="updateLine('${a}', ${i}, this.value)">${item.text}</textarea>
                                         <div class="line-controls-right">
                                             <button class="btn-del-line" onclick="delLine('${a}', ${i})" title="항목 삭제"><i class="fa-solid fa-minus"></i></button>
-                                            <i class="fa-solid fa-bars drag-handle" title="위치 이동"></i>
                                         </div>
                                     </div>
                                     ${i < arr.length - 1 ? `<div class="btn-insert-below" onclick="insertLineBelow('${a}', ${i})" title="중간에 행 추가"><i class="fa-solid fa-chevron-down"></i></div>` : ''}
@@ -633,43 +699,6 @@
             }).join('');
         }
 
-        function handleDragStart(e, agenda, index) {
-            dragInfo = { agenda, index };
-            e.dataTransfer.effectAllowed = 'move';
-            setTimeout(() => e.target.classList.add('dragging'), 0);
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            const target = e.target.closest('.line-input-group');
-            if(target) target.classList.add('drag-over');
-        }
-
-        function handleDragLeave(e) {
-            const target = e.target.closest('.line-input-group');
-            if(target) target.classList.remove('drag-over');
-        }
-
-        function handleDrop(e, targetAgenda, targetIndex) {
-            e.preventDefault();
-            const target = e.target.closest('.line-input-group');
-            if(target) target.classList.remove('drag-over');
-            
-            if (dragInfo && dragInfo.agenda === targetAgenda && dragInfo.index !== targetIndex) {
-                const list = state.contents[targetAgenda];
-                const item = list.splice(dragInfo.index, 1)[0]; 
-                list.splice(targetIndex, 0, item); 
-                renderWriteZone();
-                save();
-            }
-        }
-
-        function handleDragEnd(e) {
-            e.target.classList.remove('dragging');
-            dragInfo = null;
-            document.querySelectorAll('.line-input-group').forEach(el => el.classList.remove('drag-over'));
-        }
-
         function insertLineBelow(a, i) { state.contents[a].splice(i + 1, 0, { text: "", indent: false }); renderWriteZone(); save(); }
         function toggleTreeIndent(a, i) { state.contents[a][i].indent = !state.contents[a][i].indent; renderWriteZone(); save(); }
         function addLine(a) { state.contents[a].push({ text: "", indent: false }); renderWriteZone(); save(); }
@@ -677,7 +706,7 @@
         function updateLine(a, i, val) { state.contents[a][i].text = val; save(); }
 
         function getRawReport() {
-            let res = `📝 [회의록] ${state.title || '중례'}\n`;
+            let res = `📝 [회의록] ${state.title || '미팅데이터'}\n`;
             res += `일시: ${document.getElementById('meet-date').value.replace('T',' ')}\n`;
             res += `참석자: ${state.members.length > 0 ? state.members.join(', ') : '-'}\n`;
             res += `--------------------------\n`;
@@ -767,7 +796,7 @@
             }).then(canvas => {
                 wrapper.classList.remove('forced-light');
                 const link = document.createElement('a');
-                link.download = `회의록_${state.title || '중례'}.png`;
+                link.download = `회의록_${state.title || '미팅데이터'}.png`;
                 link.href = canvas.toDataURL('image/png');
                 document.body.appendChild(link);
                 link.click();
@@ -780,9 +809,17 @@
             });
         }
 
-        function toggleTheme() {
-            const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', theme);
+        /* [수정] 다중 테마 선택 로직 추가 */
+        function openThemeModal() { document.getElementById('theme-modal').classList.add('active'); }
+        function closeThemeModal() { document.getElementById('theme-modal').classList.remove('active'); }
+        function setTheme(themeName) {
+            if (themeName === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', themeName);
+            }
+            localStorage.setItem('olive_pwa_theme', themeName);
+            closeThemeModal();
         }
     </script>
 </body>
