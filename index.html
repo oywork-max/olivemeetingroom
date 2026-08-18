@@ -13,161 +13,307 @@
     
     <style>
         :root {
-            --bg-primary: #f9f9f7;
-            --bg-card: #ffffff;
-            --text-primary: #222222;
-            --text-secondary: #666666;
-            --color-olive: #8a9a5b;
-            --color-olive-dark: #6e7f46;
-            --color-coral: #f37321;
-            --border-color: #e5e5e0;
-            --input-bg: #f4f4f0;
+            /* 아이콘 베이스의 부드러운 말차/크림 컬러 스킴 */
+            --bg-body: #F4F1EA;
+            --bg-card: #FFFFFF;
+            --text-main: #34402A;
+            --text-muted: #828D77;
+            --border-color: #E6E4DD;
+            --input-bg: #FAFAF7;
+            
+            --color-primary: #8CA372;
+            --color-primary-dark: #6F8557;
+            --color-accent: #E07A5F;
+            
+            --shadow-sm: 0 2px 8px rgba(140, 163, 114, 0.08);
+            --shadow-md: 0 8px 16px -4px rgba(140, 163, 114, 0.12);
+            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         [data-theme="dark"] {
-            --bg-primary: #121210;
-            --bg-card: #1e1e1b;
-            --text-primary: #f5f5f0;
-            --text-secondary: #b0b0a8;
-            --color-olive: #a2b774;
-            --color-coral: #ff8838;
-            --border-color: #333330;
-            --input-bg: #2a2a27;
+            --bg-body: #232720;
+            --bg-card: #2D332A;
+            --text-main: #EAE8E0;
+            --text-muted: #9AA392;
+            --border-color: #3F473A;
+            --input-bg: #232720;
+            
+            --color-primary: #A3B88A;
+            --color-primary-dark: #B9CFA0;
+            --color-accent: #E88C75;
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 16px -4px rgba(0, 0, 0, 0.5);
+            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, system-ui, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, system-ui, sans-serif; }
         
         body { 
-            background-color: var(--bg-primary); 
-            color: var(--text-primary); 
-            padding: 12px 12px 20px; 
-            max-width: 95%; 
-            width: 1200px;
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            padding: 8px; /* 기존 16px에서 대폭 축소하여 좌우 영역 확보 */
+            max-width: 800px; 
             margin: 0 auto; 
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        h1 { font-size: 1.3rem; color: var(--color-olive); font-weight: 800; }
-        h1 span { color: var(--color-coral); }
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 14px 16px; /* 여백 축소 */
+            background: var(--bg-card);
+            border-radius: 16px; /* 둥글기 최적화 */
+            box-shadow: var(--shadow-sm); 
+            margin-bottom: 16px;
+        }
+        
+        h1 { font-size: 1.25rem; color: var(--color-primary-dark); font-weight: 800; letter-spacing: -0.5px; }
+        [data-theme="dark"] h1 { color: var(--color-primary); }
+        h1 span { color: var(--color-accent); font-weight: 700; }
 
-        .step-indicator { display: flex; gap: 4px; margin-bottom: 12px; width: 100%; }
-        .step-bar { flex: 1; height: 5px; background: var(--border-color); border-radius: 4px; }
-        .step-bar.active { background: var(--color-olive); }
+        h2 { font-size: 1.05rem; color: var(--text-main); font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        h2::before { content: ''; display: block; width: 5px; height: 16px; background: var(--color-primary); border-radius: 4px; }
 
-        .card { background: var(--bg-card); border-radius: 14px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 4px; }
-        .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-left: 4px solid var(--color-olive); padding-left: 6px; }
-        h2 { font-size: 1rem; border-left: 4px solid var(--color-olive); padding-left: 6px; margin-bottom: 10px; }
-        .card-header-flex h2 { border-left: none; padding-left: 0; margin-bottom: 0; }
+        .step-indicator { 
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px; padding: 0 8px;
+        }
+        .step-node {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--bg-card); color: var(--text-muted);
+            border: 2px solid var(--border-color);
+            display: flex; justify-content: center; align-items: center;
+            font-weight: 800; font-size: 0.85rem; transition: all 0.3s; z-index: 2;
+        }
+        .step-node.active {
+            background: var(--color-primary); color: #fff; border-color: var(--color-primary);
+            box-shadow: 0 2px 8px rgba(140, 163, 114, 0.4);
+        }
+        .step-line {
+            flex: 1; height: 3px; background: var(--border-color);
+            margin: 0 -4px; transition: all 0.3s; z-index: 1; border-radius: 2px;
+        }
+        .step-line.active { background: var(--color-primary); }
 
-        .form-group { margin-bottom: 8px; width: 100%; display: flex; flex-direction: column; }
-        .form-group label { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 4px; font-weight: 600; }
+        .card { 
+            background: var(--bg-card); border-radius: 16px; padding: 16px; 
+            margin-bottom: 12px; box-shadow: var(--shadow-md); transition: all 0.3s;
+        }
+        .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .card-header-flex h2 { margin-bottom: 0; }
+
+        .form-group { margin-bottom: 12px; width: 100%; }
+        .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
         
         input, select, textarea { 
-            width: 100% !important; 
-            max-width: 100% !important;
-            padding: 10px; 
-            border-radius: 8px; 
-            border: 1px solid var(--border-color); 
-            background: var(--input-bg); 
-            color: var(--text-primary); 
-            font-size: 0.95rem; 
-            outline: none;
-            resize: none;
+            width: 100%; padding: 12px; border-radius: 12px; 
+            border: 2px solid transparent; background: var(--input-bg); 
+            color: var(--text-main); font-size: 0.95rem; outline: none;
+            box-shadow: var(--shadow-inner); transition: all 0.2s;
         }
+        input:focus, textarea:focus { border-color: var(--color-primary); background: var(--bg-card); }
+        input[type="datetime-local"] { -webkit-appearance: none; appearance: none; }
         
-        input[type="datetime-local"] {
-            display: block;
-            min-width: 0 !important;
-            flex: 1;
-            box-sizing: border-box !important;
+        /* [수정] iOS 체크박스 디자인 오류 완벽 해결 (커스텀 디자인 적용) */
+        input[type="checkbox"] {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            width: 22px !important;
+            height: 22px !important;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--input-bg);
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            display: inline-block;
+            transition: all 0.2s;
+            margin: 0;
+        }
+        input[type="checkbox"]:checked {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
         }
         
-        .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 0.95rem; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px; }
-        .btn-primary { background: var(--color-olive); color: white; }
-        .btn-accent { background: var(--color-coral); color: white; }
-        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); }
-        .btn-small { width: auto; padding: 6px 12px; font-size: 0.85rem; border-radius: 6px; flex-shrink: 0; }
-
-        .list-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; min-height: 20px; }
-        .tag-item { background: var(--input-bg); padding: 4px 10px; border-radius: 16px; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; border: 1px solid var(--border-color); user-select: none; }
-        .tag-item i { color: var(--color-coral); cursor: pointer; }
-
-        .select-item-label { display: flex !important; align-items: center !important; justify-content: flex-start !important; gap: 12px; padding: 14px; background: var(--input-bg); border-radius: 10px; margin-bottom: 8px; cursor: pointer; width: 100%; }
-        .select-item-label input[type="checkbox"] { width: 20px !important; height: 20px !important; flex-shrink: 0; accent-color: var(--color-olive); }
-        .select-item-label span { font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .agenda-write-card { border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 12px; background: var(--bg-primary); }
-        .agenda-write-card h3 { font-size: 0.95rem; color: var(--color-olive); margin-bottom: 8px; }
+        .btn { 
+            width: 100%; padding: 12px; border-radius: 12px; border: none; 
+            font-size: 0.95rem; font-weight: 700; cursor: pointer; 
+            display: flex; justify-content: center; align-items: center; gap: 6px; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn:active { transform: scale(0.96) translateY(2px); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
         
-        .line-input-group { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 8px; background: var(--bg-card); padding: 4px; border-radius: 8px; transition: all 0.2s ease; width: 100%; }
-        .line-input-group.indent { padding-left: 24px; background: transparent; }
-        .line-input-group textarea { flex: 1; min-height: 48px; height: auto; padding: 6px 8px; line-height: 1.4; font-size: 0.9rem; }
-        .line-input-group.is-parent textarea { font-weight: 800 !important; color: var(--color-olive-dark); }
+        .btn-primary { background: var(--color-primary); color: #fff; box-shadow: 0 4px 10px rgba(140, 163, 114, 0.2); }
+        .btn-primary:hover { background: var(--color-primary-dark); }
+        .btn-accent { background: var(--color-accent); color: white; }
+        .btn-outline { background: var(--input-bg); border: 2px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--color-primary); color: var(--color-primary-dark); }
+        [data-theme="dark"] .btn-outline:hover { color: var(--color-primary); }
         
-        .btn-tree-toggle { background: none; border: none; color: var(--color-olive); padding: 10px 6px; cursor: pointer; font-size: 1rem; width: 28px; display: flex; justify-content: center; }
-        .btn-del-line { background: none; border: none; color: var(--text-secondary); padding: 10px 4px; cursor: pointer; }
+        .btn-small { width: auto; padding: 10px 16px; font-size: 0.9rem; border-radius: 10px; flex-shrink: 0; box-shadow: none; }
 
-        .all-select-wrap { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); }
-        .all-select-wrap input { width: 16px !important; height: 16px !important; accent-color: var(--color-olive); cursor: pointer; }
-
-        .capture-wrapper { background: var(--bg-card); padding: 4px; border-radius: 10px; }
+        .flex-row { display: flex; gap: 6px; width: 100%; }
         
-        /* [수정] color 규칙을 고정값 대신 변수(var(--text-primary))로 연동 */
-        .result-view { white-space: pre-wrap; background: var(--input-bg); padding: 16px; border-radius: 10px; border: 1px solid var(--border-color); line-height: 1.6; font-size: 0.9rem; color: var(--text-primary); }
-        
-        /* [추정/추가] 다크모드 대응 결과창 내부 글자 색상 명시 */
-        [data-theme="dark"] .result-view { color: #f5f5f0; }
+        .list-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; min-height: 24px; }
+        .tag-item { 
+            background: var(--bg-card); color: var(--text-main);
+            padding: 6px 12px; border-radius: 16px; display: flex; align-items: center; gap: 6px; 
+            font-size: 0.9rem; font-weight: 600; border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+        .tag-item i { color: var(--text-muted); cursor: pointer; padding: 2px; transition: color 0.2s; }
+        .tag-item i:hover { color: var(--color-accent); transform: scale(1.1); }
 
-        /* [추가] 캡처 전용 강제 라이트모드 타겟팅 스타일 */
+        .select-item-label { 
+            display: flex; align-items: center; gap: 12px; 
+            padding: 12px 16px; background: var(--input-bg); border-radius: 12px; 
+            margin-bottom: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;
+        }
+        .select-item-label:hover { border-color: var(--color-primary); }
+        .select-item-label span { font-size: 0.95rem; font-weight: 600; }
+
+        .agenda-write-card { 
+            border: 2px solid var(--border-color); border-radius: 16px; padding: 12px; 
+            margin-bottom: 16px; background: var(--bg-card); 
+        }
+        .agenda-write-card h3 { 
+            font-size: 0.95rem; color: var(--text-main); margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px;
+            background: var(--input-bg); padding: 6px 12px; border-radius: 10px; border: 1px solid var(--border-color);
+        }
+        .agenda-write-card h3 i { color: var(--color-primary); }
+        
+        .line-input-group { 
+            display: flex; align-items: flex-start; gap: 4px; margin-bottom: 8px; background: var(--input-bg); 
+            padding: 4px; border-radius: 12px; transition: all 0.2s ease; position: relative; border: 2px solid transparent;
+        }
+        
+        .line-input-group.indent { 
+            margin-left: 24px; background: transparent; border-left: 3px solid var(--color-primary);
+            border-radius: 0 12px 12px 0; padding-left: 8px;
+        }
+        
+        .line-input-group textarea { 
+            flex: 1; min-height: 40px; height: auto; padding: 10px 8px; line-height: 1.4; font-size: 0.95rem; 
+            background: transparent; border: none; box-shadow: none; resize: none;
+        }
+        .line-input-group.indent textarea { background: var(--input-bg); border-radius: 10px; }
+        .line-input-group.is-parent textarea { font-weight: 800; color: var(--color-primary-dark); }
+        [data-theme="dark"] .line-input-group.is-parent textarea { color: var(--color-primary); }
+        
+        .btn-tree-toggle { background: none; border: none; color: var(--text-muted); padding: 10px 4px; cursor: pointer; font-size: 1rem; width: 24px; transition: color 0.2s;}
+        .btn-tree-toggle:hover { color: var(--color-primary); }
+        
+        .line-controls-right { display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 6px; padding: 4px 2px; }
+        .btn-del-line { background: none; border: none; color: var(--text-muted); padding: 4px; cursor: pointer; font-size: 1rem; transition: color 0.2s; }
+        .btn-del-line:hover { color: var(--color-accent); }
+        .drag-handle { color: var(--text-muted); cursor: grab; font-size: 1.1rem; padding: 4px; touch-action: none; opacity: 0.5; transition: opacity 0.2s; }
+        .drag-handle:hover { opacity: 1; color: var(--color-primary); }
+        .drag-handle:active { cursor: grabbing; }
+        
+        .btn-insert-below { 
+            text-align: center; color: var(--color-primary); cursor: pointer; margin: -8px 0 2px 0; z-index: 10; position: relative; 
+            font-size: 1rem; transition: transform 0.1s, opacity 0.2s; opacity: 0; 
+        }
+        .agenda-write-card:hover .btn-insert-below { opacity: 1; }
+        .btn-insert-below:active { transform: scale(1.2); }
+        .btn-insert-below i { background: var(--bg-card); padding: 2px 10px; border-radius: 8px; border: 2px solid var(--border-color); color: var(--text-muted); }
+        .btn-insert-below i:hover { color: var(--color-primary); border-color: var(--color-primary); }
+
+        .line-input-group.dragging { opacity: 0.4; border: 2px dashed var(--color-primary); background: var(--bg-card); }
+        .line-input-group.drag-over { border-top: 3px solid var(--color-primary); }
+
+        .all-select-wrap { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; color: var(--text-muted); }
+
+        .capture-wrapper { background: var(--bg-card); padding: 4px; border-radius: 16px; margin-bottom: 16px; }
+        .result-view { 
+            white-space: pre-wrap; background: var(--input-bg); 
+            padding: 20px; border-radius: 16px; border: 2px solid var(--border-color); 
+            line-height: 1.6; font-size: 0.95rem; color: var(--text-main); 
+        }
+
         .forced-light {
-            --bg-card: #ffffff !important;
-            --input-bg: #f4f4f0 !important;
-            --text-primary: #222222 !important;
-            --border-color: #e5e5e0 !important;
+            --bg-card: #FFFFFF !important; --input-bg: #FAFAF7 !important;
+            --text-main: #34402A !important; --border-color: #E6E4DD !important;
+            --color-primary-dark: #6F8557 !important;
         }
         .forced-light .result-view {
-            color: #222222 !important;
-            background: #f4f4f0 !important;
-            border-color: #e5e5e0 !important;
+            color: #34402A !important; background: #FAFAF7 !important; border-color: #E6E4DD !important;
         }
 
         .hidden { display: none !important; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        .mt-10 { margin-top: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .mt-12 { margin-top: 12px; }
+        .mt-20 { margin-top: 16px; }
+        .text-danger { color: var(--color-accent); border-color: rgba(224, 122, 95, 0.3); }
+        .text-danger:hover { background: rgba(224, 122, 95, 0.1); border-color: var(--color-accent); }
 
-        @media (max-width: 640px) {
-            body {
-                max-width: 100%;
-                padding: 12px;
-            }
+        .toast-container {
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; gap: 8px; z-index: 9999; pointer-events: none; width: 90%; max-width: 400px;
         }
+        .toast {
+            background: #2C3625; color: white; padding: 12px 20px;
+            border-radius: 20px; font-size: 0.9rem; font-weight: 600; text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); backdrop-filter: blur(8px);
+            opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        [data-theme="dark"] .toast { background: #EAE8E0; color: #232720; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(35, 39, 32, 0.6);
+            display: flex; justify-content: center; align-items: center; z-index: 10000;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s; backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-card {
+            background: var(--bg-card); padding: 28px 20px; border-radius: 24px; width: 90%; max-width: 320px;
+            box-shadow: var(--shadow-md); transform: scale(0.9); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
+        }
+        .modal-overlay.active .modal-card { transform: scale(1); }
+        .modal-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
+        .modal-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+        .modal-actions { display: flex; gap: 8px; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>OLIVE <span>Meeting Room</span></h1>
-        <button class="btn-outline btn-small" onclick="toggleTheme()">테마</button>
+        <h1><i></ㅑ>OLIVE <span>Meeting Room</span></i></h1>
+        <button class="btn-outline btn-small" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i> 테마</button>
     </header>
 
     <div class="step-indicator">
-        <div class="step-bar active" id="bar-1"></div>
-        <div class="step-bar" id="bar-2"></div>
-        <div class="step-bar" id="bar-3"></div>
-        <div class="step-bar" id="bar-4"></div>
+        <div class="step-node active" id="step-node-1">1</div>
+        <div class="step-line" id="step-line-1"></div>
+        <div class="step-node" id="step-node-2">2</div>
+        <div class="step-line" id="step-line-2"></div>
+        <div class="step-node" id="step-node-3">3</div>
+        <div class="step-line" id="step-line-3"></div>
+        <div class="step-node" id="step-node-4"><i class="fa-solid fa-check"></i></div>
     </div>
 
+    <!-- 1단계: 기본 설정 -->
     <div id="step-setup">
         <div class="card">
             <h2>기본 정보</h2>
             <div class="form-group">
                 <label>회의 제목</label>
-                <input type="text" id="meet-title" placeholder="예: 주간 매장 점검 회의">
+                <input type="text" id="meet-title" placeholder="예: 이 달의 중례">
             </div>
             <div class="form-group">
                 <label>회의 일시</label>
@@ -177,78 +323,98 @@
 
         <div class="card">
             <h2>참석자 등록</h2>
-            <div style="display:flex; gap:6px; width:100%;">
+            <div class="flex-row">
                 <input type="text" id="member-input" placeholder="이름 입력 후 엔터" onkeydown="if(event.keyCode==13) addMember()">
-                <button class="btn btn-primary btn-small" onclick="addMember()">등록</button>
+                <button class="btn btn-primary btn-small" onclick="addMember()">추가</button>
             </div>
             <div id="member-list" class="list-container"></div>
         </div>
 
         <div class="card">
             <h2>회의 안건 관리</h2>
-            <div style="display:flex; gap:6px; width:100%;">
+            <div class="flex-row">
                 <input type="text" id="agenda-input" placeholder="안건 입력 후 엔터" onkeydown="if(event.keyCode==13) addAgenda()">
-                <button class="btn btn-primary btn-small" onclick="addAgenda()">등록</button>
+                <button class="btn btn-primary btn-small" onclick="addAgenda()">추가</button>
             </div>
             <div id="agenda-list" class="list-container"></div>
         </div>
 
-        <button class="btn btn-primary" onclick="switchStep(2)">회의 안건 선택 ➔</button>
+        <button class="btn btn-primary" onclick="switchStep(2)">다음 단계 (안건 선택) ➔</button>
         
-        <div class="mt-12" style="text-align: center;">
-            <button class="btn btn-outline" style="color: #ff4d4d; border-color: #ffcccc; font-size:0.8rem; padding:8px;" onclick="clearAllCache()">
-                <i class="fa-solid fa-trash-can"></i> 전체 캐시 이력 초기화
+        <div class="mt-20" style="text-align: center;">
+            <button class="btn btn-outline text-danger" style="font-size:0.9rem; padding:12px; width: auto; margin: 0 auto; border:none; background:transparent; box-shadow:none;" onclick="requestClearCache()">
+                <i class="fa-solid fa-rotate-right"></i> 앱 데이터 초기화
             </button>
         </div>
     </div>
 
+    <!-- 2단계: 안건 선택 -->
     <div id="step-select" class="hidden">
         <div class="card">
             <div class="card-header-flex">
-                <h2>안건 선택</h2>
+                <h2>오늘 다룰 안건</h2>
                 <label class="all-select-wrap">
                     <input type="checkbox" id="all-agenda-select" onchange="toggleAllAgendas(this.checked)">
                     <span>전체 선택</span>
                 </label>
             </div>
             <div id="select-zone"></div>
-            <div class="grid-2 mt-10">
+            <div class="grid-2 mt-20">
                 <button class="btn btn-outline" onclick="switchStep(1)">이전</button>
-                <button class="btn btn-accent" onclick="initWriteStep()">회의 시작 ➔</button>
+                <button class="btn btn-primary" onclick="initWriteStep()">회의 시작 ➔</button>
             </div>
         </div>
     </div>
 
+    <!-- 3단계: 회의 진행 기록 -->
     <div id="step-write" class="hidden">
         <div class="card">
-            <h2>회의 진행 기록</h2>
+            <h2>진행 기록</h2>
             <div id="write-zone"></div>
-            <div class="grid-2">
+            <div class="grid-2 mt-20">
                 <button class="btn btn-outline" onclick="switchStep(2)">안건 변경</button>
-                <button class="btn btn-primary" onclick="renderResult()">회의 종료 ➔</button>
+                <button class="btn btn-primary" onclick="renderResult()">작성 완료 <i class="fa-solid fa-check"></i></button>
             </div>
         </div>
     </div>
 
+    <!-- 4단계: 결과 확인 및 공유 -->
     <div id="step-result" class="hidden">
         <div class="card">
             <h2>최종 회의록</h2>
+            
             <div class="capture-wrapper" id="capture-area">
                 <div class="result-view" id="result-text"></div>
             </div>
-            
-            <div class="mt-12">
-                <button class="btn btn-accent" onclick="shareToSlack()" style="padding: 14px; font-size: 1.05rem;"><i class="fa-brands fa-slack"></i> Slack 공유</button>
+
+            <div class="mt-20">
+                <button class="btn btn-primary" onclick="shareToSlack()" style="padding: 18px; font-size: 1.05rem;">
+                   <i class="fa-brands fa-slack"></i> Slack 으로 전송하기 (모바일전용)
+                </button>
             </div>
 
-            <div class="grid-2 mt-10">
+            <div class="grid-2 mt-12">
                 <button class="btn btn-outline" onclick="copyText()"><i class="fa-regular fa-copy"></i> 텍스트 복사</button>
-                <button class="btn btn-primary" onclick="downloadAsPNG()"><i class="fa-solid fa-file-image"></i> 사진(PNG)로 저장</button>
+                <button class="btn btn-outline" onclick="downloadAsPNG()"><i class="fa-solid fa-file-image"></i> 사진(PNG) 저장</button>
             </div>
             
-            <div class="grid-2 mt-12" style="border-top: 1px dashed var(--border-color); padding-top: 12px;">
-                <button class="btn btn-outline" onclick="switchStep(3)"><i class="fa-solid fa-chevron-left"></i> 이전</button>
-                <button class="btn btn-outline" style="color:red; border-color: #ffcccc;" onclick="location.reload()">새 회의 시작</button>
+            <div class="grid-2 mt-20" style="border-top: 2px dashed var(--border-color); padding-top: 20px;">
+                <button class="btn btn-outline" onclick="switchStep(3)"><i class="fa-solid fa-chevron-left"></i> 내용 수정</button>
+                <button class="btn btn-outline text-danger" onclick="location.reload()">새 회의 시작</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 기타 모달 및 알림 영역 -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <div class="modal-overlay" id="custom-confirm-modal">
+        <div class="modal-card">
+            <div class="modal-title" id="modal-title">알림</div>
+            <div class="modal-desc" id="modal-desc">내용</div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="modal-btn-cancel">취소</button>
+                <button class="btn btn-primary text-danger" id="modal-btn-confirm" style="background:var(--color-accent); color:white; border:none;">확인</button>
             </div>
         </div>
     </div>
@@ -257,13 +423,15 @@
         let state = {
             title: "", date: "", 
             members: [], 
-            agendas: ["전사전략공유", "공유사항"],
+            agendas: ["프로젝트 진척상황 공유", "이슈 및 리스크 논의"],
             selected: [],
             contents: {}
         };
 
+        let dragInfo = null;
+
         window.onload = () => {
-            const saved = localStorage.getItem('olive_pwa_data_v4_tree');
+            const saved = localStorage.getItem('olive_pwa_data_v5_clay');
             if(saved) state = JSON.parse(saved);
             renderSetup();
             
@@ -288,17 +456,53 @@
             });
         };
 
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        let confirmCallback = null;
+        function showConfirm(title, desc, callback) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('custom-confirm-modal').classList.add('active');
+            confirmCallback = callback;
+        }
+
+        document.getElementById('modal-btn-cancel').onclick = () => {
+            document.getElementById('custom-confirm-modal').classList.remove('active');
+            confirmCallback = null;
+        };
+
+        document.getElementById('modal-btn-confirm').onclick = () => {
+            document.getElementById('custom-confirm-modal').classList.remove('active');
+            if (confirmCallback) confirmCallback();
+        };
+
         function save() { 
             state.title = document.getElementById('meet-title').value;
             state.date = document.getElementById('meet-date').value;
-            localStorage.setItem('olive_pwa_data_v4_tree', JSON.stringify(state)); 
+            localStorage.setItem('olive_pwa_data_v5_clay', JSON.stringify(state)); 
         }
 
-        function clearAllCache() {
-            if(confirm("모든 캐시 데이터가 공장 초기화됩니다. 진행할까요?")) {
-                localStorage.removeItem('olive_pwa_data_v4_tree');
-                location.reload();
-            }
+        function requestClearCache() {
+            showConfirm(
+                "데이터 초기화", 
+                "작성 중인 모든 회의 내용과 기록이 삭제됩니다. 계속하시겠습니까?", 
+                () => {
+                    localStorage.removeItem('olive_pwa_data_v5_clay');
+                    location.reload();
+                }
+            );
         }
 
         function addMember() {
@@ -337,14 +541,15 @@
             document.getElementById(ids[n-1]).classList.remove('hidden');
             
             for(let i=1; i<=4; i++) {
-                const bar = document.getElementById(`bar-${i}`);
-                if(i <= n) bar.classList.add('active');
-                else bar.classList.remove('active');
+                const node = document.getElementById(`step-node-${i}`);
+                const line = document.getElementById(`step-line-${i}`);
+                if(i <= n) { if(node) node.classList.add('active'); if(line) line.classList.add('active'); } 
+                else { if(node) node.classList.remove('active'); if(line) line.classList.remove('active'); }
             }
             
             if(n === 2) renderSelect();
             save();
-            window.scrollTo(0,0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function renderSelect() {
@@ -364,11 +569,8 @@
         function toggleAllAgendas(isChecked) {
             const boxes = document.querySelectorAll('#select-zone input[type="checkbox"]');
             boxes.forEach(box => box.checked = isChecked);
-            if(isChecked) {
-                state.selected = [...state.agendas];
-            } else {
-                state.selected = [];
-            }
+            if(isChecked) state.selected = [...state.agendas];
+            else state.selected = [];
             save();
         }
 
@@ -383,10 +585,10 @@
         function initWriteStep() {
             const checked = document.querySelectorAll('#select-zone input:checked');
             state.selected = Array.from(checked).map(c => c.value);
-            if(state.selected.length === 0) return alert("진행할 안건을 최소 하나 선택해주세요.");
+            if(state.selected.length === 0) return showToast("진행할 안건을 최소 하나 선택해주세요.");
             
             state.selected.forEach(a => { 
-                if(!state.contents[a]) {
+                if(!state.contents[a] || state.contents[a].length === 0) {
                     state.contents[a] = [{ text: "", indent: false }]; 
                 }
             });
@@ -400,33 +602,76 @@
                 const arr = state.contents[a];
                 return `
                     <div class="agenda-write-card">
-                        <h3>📌 ${a}</h3>
+                        <h3><i class="fa-solid fa-thumbtack"></i> ${a}</h3>
                         <div id="lines-${a}">
                             ${arr.map((item, i) => {
                                 const isParent = (i < arr.length - 1 && arr[i+1].indent && !item.indent);
                                 return `
-                                    <div class="line-input-group ${item.indent ? 'indent' : ''} ${isParent ? 'is-parent' : ''}">
-                                        <button class="btn-tree-toggle" onclick="toggleTreeIndent('${a}', ${i})">
-                                            <i class="fa-solid ${item.indent ? 'fa-chevron-left' : 'fa-chevron-right'}"></i>
+                                    <div class="line-input-group ${item.indent ? 'indent' : ''} ${isParent ? 'is-parent' : ''}"
+                                         draggable="true"
+                                         ondragstart="handleDragStart(event, '${a}', ${i})"
+                                         ondragover="handleDragOver(event)"
+                                         ondragleave="handleDragLeave(event)"
+                                         ondrop="handleDrop(event, '${a}', ${i})"
+                                         ondragend="handleDragEnd(event)">
+                                        <button class="btn-tree-toggle" onclick="toggleTreeIndent('${a}', ${i})" title="하위 항목으로 변경">
+                                            <i class="fa-solid ${item.indent ? 'fa-angle-right' : 'fa-list-ul'}"></i>
                                         </button>
-                                        <textarea placeholder="${item.indent ? '상세 내용을 입력하세요' : '주요 아젠다를 입력하세요'}" oninput="updateLine('${a}', ${i}, this.value)">${item.text}</textarea>
-                                        <button class="btn-del-line" onclick="delLine('${a}', ${i})"><i class="fa-solid fa-minus"></i></button>
+                                        <textarea placeholder="${item.indent ? '세부 내용을 입력하세요' : '주요 내용을 입력하세요'}" oninput="updateLine('${a}', ${i}, this.value)">${item.text}</textarea>
+                                        <div class="line-controls-right">
+                                            <button class="btn-del-line" onclick="delLine('${a}', ${i})" title="항목 삭제"><i class="fa-solid fa-minus"></i></button>
+                                            <i class="fa-solid fa-bars drag-handle" title="위치 이동"></i>
+                                        </div>
                                     </div>
+                                    ${i < arr.length - 1 ? `<div class="btn-insert-below" onclick="insertLineBelow('${a}', ${i})" title="중간에 행 추가"><i class="fa-solid fa-chevron-down"></i></div>` : ''}
                                 `;
                             }).join('')}
                         </div>
-                        <button class="btn btn-outline btn-small" onclick="addLine('${a}')" style="width:100%; margin-top:4px;">+ 내용 행 추가</button>
+                        <button class="btn btn-outline btn-small" onclick="addLine('${a}')" style="width:100%; margin-top:8px; border-style: dashed;"><i class="fa-solid fa-plus"></i> 맨 아래 내용 추가</button>
                     </div>
                 `;
             }).join('');
         }
 
-        function toggleTreeIndent(a, i) {
-            state.contents[a][i].indent = !state.contents[a][i].indent;
-            renderWriteZone();
-            save();
+        function handleDragStart(e, agenda, index) {
+            dragInfo = { agenda, index };
+            e.dataTransfer.effectAllowed = 'move';
+            setTimeout(() => e.target.classList.add('dragging'), 0);
         }
 
+        function handleDragOver(e) {
+            e.preventDefault();
+            const target = e.target.closest('.line-input-group');
+            if(target) target.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            const target = e.target.closest('.line-input-group');
+            if(target) target.classList.remove('drag-over');
+        }
+
+        function handleDrop(e, targetAgenda, targetIndex) {
+            e.preventDefault();
+            const target = e.target.closest('.line-input-group');
+            if(target) target.classList.remove('drag-over');
+            
+            if (dragInfo && dragInfo.agenda === targetAgenda && dragInfo.index !== targetIndex) {
+                const list = state.contents[targetAgenda];
+                const item = list.splice(dragInfo.index, 1)[0]; 
+                list.splice(targetIndex, 0, item); 
+                renderWriteZone();
+                save();
+            }
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            dragInfo = null;
+            document.querySelectorAll('.line-input-group').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        function insertLineBelow(a, i) { state.contents[a].splice(i + 1, 0, { text: "", indent: false }); renderWriteZone(); save(); }
+        function toggleTreeIndent(a, i) { state.contents[a][i].indent = !state.contents[a][i].indent; renderWriteZone(); save(); }
         function addLine(a) { state.contents[a].push({ text: "", indent: false }); renderWriteZone(); save(); }
         function delLine(a, i) { if(state.contents[a].length > 1) { state.contents[a].splice(i, 1); renderWriteZone(); save(); } }
         function updateLine(a, i, val) { state.contents[a][i].text = val; save(); }
@@ -461,7 +706,46 @@
             switchStep(4);
         }
 
-        function copyText() { navigator.clipboard.writeText(getRawReport()); alert("클립보드에 복사되었습니다."); }
+        // 복사 에러 완벽 해결 (우회 방식 포함)
+        function copyText() { 
+            const textToCopy = getRawReport();
+
+            // 1. 최신 Clipboard API 시도 (보안 컨텍스트에서만 작동)
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => showToast("텍스트가 클립보드에 복사되었습니다."))
+                    .catch(err => fallbackCopyTextToClipboard(textToCopy));
+            } else {
+                // 2. 구형 우회 방식 시도 (http 환경, 모바일 웹뷰 등)
+                fallbackCopyTextToClipboard(textToCopy);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            
+            // 화면 밖으로 밀어내기 (스크롤 튀는 현상 방지)
+            textArea.style.position = "fixed";
+            textArea.style.top = "0";
+            textArea.style.left = "-999999px";
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("텍스트가 클립보드에 복사되었습니다.");
+                } else {
+                    showToast("복사 실패. 결과창 텍스트를 직접 선택해주세요.");
+                }
+            } catch (err) {
+                showToast("브라우저가 복사를 지원하지 않습니다.");
+            }
+            document.body.removeChild(textArea);
+        }
 
         async function shareToSlack() {
             const reportText = getRawReport();
@@ -469,35 +753,29 @@
                 try { await navigator.share({ title: state.title || '회의록 전송', text: reportText }); } 
                 catch (err) { console.log('공유 취소:', err); }
             } else {
-                navigator.clipboard.writeText(reportText);
-                alert("시스템 공유 기능이 지원되지 않아 클립보드에 복사했습니다. Slack 창에 붙여넣기 해주세요.");
+                copyText();
+                showToast("공유 기능을 지원하지 않는 기기라 클립보드에 자동 복사했습니다.");
             }
         }
 
-        /* [수정] 캡처 전용 화이트/라이트 모드 강제 토글 로직 구현 완료 */
         function downloadAsPNG() {
             const wrapper = document.getElementById('capture-area');
-            
-            // 1. html2canvas 촬영 전, 라이트모드 스타일 강제 클래스 부여
             wrapper.classList.add('forced-light');
 
             html2canvas(wrapper, {
-                scale: 2, 
-                backgroundColor: '#ffffff', // 이미지 배경색을 무조건 흰색으로 강제 고정
-                useCORS: true
+                scale: 2, backgroundColor: '#FAFAF7', useCORS: true
             }).then(canvas => {
-                // 2. 캡처 직후 스타일 원상 복구 (유저 화면 깜빡임 차단)
                 wrapper.classList.remove('forced-light');
-
                 const link = document.createElement('a');
-                link.download = `회의록_${state.title || '미팅데이터'}.png`;
+                link.download = `회의록_${state.title || '중례'}.png`;
                 link.href = canvas.toDataURL('image/png');
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+                showToast("이미지가 저장되었습니다.");
             }).catch(err => {
-                wrapper.classList.remove('forced-light'); // 에러 시에도 안전하게 클래스 제거
-                alert('이미지 생성 실패. 다시 시도해 주세요.');
+                wrapper.classList.remove('forced-light');
+                showToast('이미지 생성 실패. 다시 시도해 주세요.');
                 console.error(err);
             });
         }
