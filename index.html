@@ -13,60 +13,79 @@
     
     <style>
         :root {
-            /* 아이콘 베이스의 부드러운 말차/크림 컬러 스킴 */
-            --bg-body: #F4F1EA;
+            /* 🌿 올리브영 (기본) 테마 */
+            --bg-body: #F7FAF5;
             --bg-card: #FFFFFF;
-            --text-main: #34402A;
-            --text-muted: #828D77;
-            --border-color: #E6E4DD;
-            --input-bg: #FAFAF7;
+            --text-main: #2A3622;
+            --text-muted: #7E8C73;
+            --border-color: #E2EBDD;
+            --input-bg: #F2F8ED;
             
-            --color-primary: #8CA372;
-            --color-primary-dark: #6F8557;
-            --color-accent: #E07A5F;
+            --color-primary: #9BCE26;
+            --color-primary-dark: #84B41C;
+            --color-accent: #FF7878;
             
-            --shadow-sm: 0 2px 8px rgba(140, 163, 114, 0.08);
-            --shadow-md: 0 8px 16px -4px rgba(140, 163, 114, 0.12);
+            --shadow-sm: 0 2px 8px rgba(155, 206, 38, 0.1);
+            --shadow-md: 0 8px 16px -4px rgba(155, 206, 38, 0.15);
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         [data-theme="dark"] {
-            --bg-body: #232720;
-            --bg-card: #2D332A;
-            --text-main: #EAE8E0;
-            --text-muted: #9AA392;
-            --border-color: #3F473A;
-            --input-bg: #232720;
+            /* 🌙 다크 모드 (그레이 베이스) */
+            --bg-body: #121212;
+            --bg-card: #1E1E1E;
+            --text-main: #E0E0E0;
+            --text-muted: #888888;
+            --border-color: #333333;
+            --input-bg: #1A1A1A;
             
-            --color-primary: #A3B88A;
-            --color-primary-dark: #B9CFA0;
-            --color-accent: #E88C75;
+            --color-primary: #B0B0B0;
+            --color-primary-dark: #FFFFFF;
+            --color-accent: #FF6B6B;
             
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 8px 16px -4px rgba(0, 0, 0, 0.5);
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        /* [추가] 라임 & 코랄 테마 (#82DC28, #FF7878) */
-        [data-theme="neon"] {
-            --bg-body: #F7FAF5;
+        [data-theme="blue"] {
+            /* 🌊 파랑 & 다크 테마 */
+            --bg-body: #F4F6F9;
             --bg-card: #FFFFFF;
-            --text-main: #2A3622;
-            --text-muted: #7E8C73;
-            --border-color: #D3F1B8;
-            --input-bg: #F2F8ED;
+            --text-main: #1C1C1D;
+            --text-muted: #6B7280;
+            --border-color: #DDE4F2;
+            --input-bg: #F8FAFC;
             
-            --color-primary: #82DC28;
-            --color-primary-dark: #6BB521;
-            --color-accent: #FF7878;
+            --color-primary: #2043BF;
+            --color-primary-dark: #173296;
+            --color-accent: #1C1C1D;
             
-            --shadow-sm: 0 2px 8px rgba(130, 220, 40, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(130, 220, 40, 0.15);
+            --shadow-sm: 0 2px 8px rgba(32, 67, 191, 0.1);
+            --shadow-md: 0 8px 16px -4px rgba(32, 67, 191, 0.15);
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        /* [추가] 연보라 & 핑크 테마 */
+        [data-theme="yellow"] {
+            /* 🌕 옐로우 & 다크 테마 */
+            --bg-body: #FFFDF5;
+            --bg-card: #FFFFFF;
+            --text-main: #160C28;
+            --text-muted: #6B6875;
+            --border-color: #F2EACC;
+            --input-bg: #FCFAF2;
+            
+            --color-primary: #EDC65B;
+            --color-primary-dark: #D4B04C;
+            --color-accent: #160C28;
+            
+            --shadow-sm: 0 2px 8px rgba(237, 198, 91, 0.1);
+            --shadow-md: 0 8px 16px -4px rgba(237, 198, 91, 0.15);
+            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
         [data-theme="purple"] {
+            /* 🍇 연보라 & 핑크 테마 */
             --bg-body: #F8F6FA;
             --bg-card: #FFFFFF;
             --text-main: #332A3B;
@@ -83,30 +102,12 @@
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        /* [추가] 블루 & 그레이 테마 */
-        [data-theme="blue"] {
-            --bg-body: #F4F6F9;
-            --bg-card: #FFFFFF;
-            --text-main: #242D38;
-            --text-muted: #7A899C;
-            --border-color: #E2E8F0;
-            --input-bg: #F8FAFC;
-            
-            --color-primary: #5C8AE6;
-            --color-primary-dark: #446BC0;
-            --color-accent: #7A899C;
-            
-            --shadow-sm: 0 2px 8px rgba(92, 138, 230, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(92, 138, 230, 0.15);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, system-ui, sans-serif; }
         
         body { 
             background-color: var(--bg-body); 
             color: var(--text-main); 
-            padding: 8px; /* 기존 16px에서 대폭 축소하여 좌우 영역 확보 */
+            padding: 4px; /* 기존 16px에서 대폭 축소하여 좌우 영역 확보 */
             max-width: 800px; 
             margin: 0 auto; 
             min-height: 100vh;
@@ -115,11 +116,11 @@
 
         header { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 14px 16px; /* 여백 축소 */
+            padding: 12px 14px; /* 여백 축소 */
             background: var(--bg-card);
             border-radius: 16px; /* 둥글기 최적화 */
             box-shadow: var(--shadow-sm); 
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         
         h1 { font-size: 1.25rem; color: var(--color-primary-dark); font-weight: 800; letter-spacing: -0.5px; }
@@ -256,15 +257,14 @@
         }
         
         .line-input-group.indent { 
-            margin-left: 24px; background: transparent; border-left: 3px solid var(--color-primary);
-            border-radius: 0 12px 12px 0; padding-left: 8px;
+            margin-left: 14px; background: var(--input-bg); border-left: 3px solid var(--color-primary);
+            border-radius: 4px 12px 12px 4px; padding-left: 8px;
         }
         
         .line-input-group textarea { 
             flex: 1; min-height: 40px; height: auto; padding: 10px 8px; line-height: 1.4; font-size: 0.95rem; 
             background: transparent; border: none; box-shadow: none; resize: none;
         }
-        .line-input-group.indent textarea { background: var(--input-bg); border-radius: 10px; }
         .line-input-group.is-parent textarea { font-weight: 800; color: var(--color-primary-dark); }
         [data-theme="dark"] .line-input-group.is-parent textarea { color: var(--color-primary); }
         
@@ -294,12 +294,12 @@
         }
 
         .forced-light {
-            --bg-card: #FFFFFF !important; --input-bg: #FAFAF7 !important;
-            --text-main: #34402A !important; --border-color: #E6E4DD !important;
-            --color-primary-dark: #6F8557 !important;
+            --bg-card: #FFFFFF !important; --input-bg: #F2F8ED !important;
+            --text-main: #2A3622 !important; --border-color: #E2EBDD !important;
+            --color-primary-dark: #6BB521 !important;
         }
         .forced-light .result-view {
-            color: #34402A !important; background: #FAFAF7 !important; border-color: #E6E4DD !important;
+            color: #2A3622 !important; background: #F2F8ED !important; border-color: #E2EBDD !important;
         }
 
         .hidden { display: none !important; }
@@ -366,7 +366,7 @@
             <h2>기본 정보</h2>
             <div class="form-group">
                 <label>회의 제목</label>
-                <input type="text" id="meet-title" placeholder="예: 주간 회의">
+                <input type="text" id="meet-title" placeholder="예: 주간 마케팅 점검 회의">
             </div>
             <div class="form-group">
                 <label>회의 일시</label>
@@ -442,13 +442,13 @@
 
             <div class="mt-20">
                 <button class="btn btn-primary" onclick="shareToSlack()" style="padding: 18px; font-size: 1.05rem;">
-                    <i class="fa-brands fa-slack"></i> Slack 앱으로 전송하기 (모바일 전용)
+                    <i class="fa-brands fa-slack"></i> Slack 앱 전송하기 (모바일전용)
                 </button>
             </div>
 
             <div class="grid-2 mt-12">
-                <button class="btn btn-outline" onclick="copyText()"><i class="fa-regular fa-copy"></i> 텍스트 복사</button>
-                <button class="btn btn-outline" onclick="downloadAsPNG()"><i class="fa-solid fa-file-image"></i> 사진(PNG) 저장</button>
+                <button class="btn btn-outline" onclick="copyText()"><i class="fa-regular fa-copy"></i>텍스트 복사</button>
+                <button class="btn btn-outline" onclick="downloadAsPNG()"><i class="fa-solid fa-file-image"></i>사진(PNG) 저장</button>
             </div>
             
             <div class="grid-2 mt-20" style="border-top: 2px dashed var(--border-color); padding-top: 20px;">
@@ -478,11 +478,11 @@
             <div class="modal-title">테마 설정</div>
             <div class="modal-desc" style="margin-bottom: 16px;">원하는 컬러 테마를 선택하세요.</div>
             <div class="theme-list" style="display:flex; flex-direction:column;">
-                <button class="btn btn-small theme-list-btn" onclick="setTheme('light')"><span>🍵 올리브 (기본)</span> <div class="theme-color-preview" style="background:#8CA372;"></div></button>
-                <button class="btn btn-small theme-list-btn" onclick="setTheme('dark')"><span>🌙 다크 모드</span> <div class="theme-color-preview" style="background:#2D332A;"></div></button>
-                <button class="btn btn-small theme-list-btn" onclick="setTheme('neon')"><span>🥝 라임 & 코랄</span> <div class="theme-color-preview" style="background:#82DC28;"></div></button>
-                <button class="btn btn-small theme-list-btn" onclick="setTheme('purple')"><span>🍇 연보라 & 핑크</span> <div class="theme-color-preview" style="background:#AD8CEB;"></div></button>
-                <button class="btn btn-small theme-list-btn" style="margin-bottom:20px;" onclick="setTheme('blue')"><span>🧊 파랑 & 그레이</span> <div class="theme-color-preview" style="background:#5C8AE6;"></div></button>
+                <button class="btn btn-small theme-list-btn" onclick="setTheme('light')"><span>🌿 올리브영 (기본)</span> <div class="theme-color-preview" style="background:#9BCE26;"></div></button>
+                <button class="btn btn-small theme-list-btn" onclick="setTheme('dark')"><span>🌙 다크 (그레이)</span> <div class="theme-color-preview" style="background:#333333;"></div></button>
+                <button class="btn btn-small theme-list-btn" onclick="setTheme('blue')"><span>🌊 파랑 & 다크</span> <div class="theme-color-preview" style="background:#2043BF;"></div></button>
+                <button class="btn btn-small theme-list-btn" onclick="setTheme('yellow')"><span>🌕 옐로우 & 다크</span> <div class="theme-color-preview" style="background:#EDC65B;"></div></button>
+                <button class="btn btn-small theme-list-btn" style="margin-bottom:20px;" onclick="setTheme('purple')"><span>🍇 연보라 & 핑크</span> <div class="theme-color-preview" style="background:#AD8CEB;"></div></button>
             </div>
             <button class="btn btn-primary" onclick="closeThemeModal()">닫기</button>
         </div>
@@ -492,7 +492,7 @@
         let state = {
             title: "", date: "", 
             members: [], 
-            agendas: ["전사전략방향", "공유사항"],
+            agendas: ["전사전략", "공유사"],
             selected: [],
             contents: {}
         };
@@ -706,7 +706,7 @@
         function updateLine(a, i, val) { state.contents[a][i].text = val; save(); }
 
         function getRawReport() {
-            let res = `📝 [회의록] ${state.title || '미팅데이터'}\n`;
+            let res = `📝 [회의록] ${state.title || '중례'}\n`;
             res += `일시: ${document.getElementById('meet-date').value.replace('T',' ')}\n`;
             res += `참석자: ${state.members.length > 0 ? state.members.join(', ') : '-'}\n`;
             res += `--------------------------\n`;
@@ -792,11 +792,11 @@
             wrapper.classList.add('forced-light');
 
             html2canvas(wrapper, {
-                scale: 2, backgroundColor: '#FAFAF7', useCORS: true
+                scale: 2, backgroundColor: '#F7FAF5', useCORS: true
             }).then(canvas => {
                 wrapper.classList.remove('forced-light');
                 const link = document.createElement('a');
-                link.download = `회의록_${state.title || '미팅데이터'}.png`;
+                link.download = `회의록_${state.title || '중례'}.png`;
                 link.href = canvas.toDataURL('image/png');
                 document.body.appendChild(link);
                 link.click();
