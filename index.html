@@ -103,26 +103,39 @@
         .agenda-write-card { border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 12px; background: var(--bg-primary); }
         .agenda-write-card h3 { font-size: 0.95rem; color: var(--color-olive); margin-bottom: 8px; }
         
-        .line-input-group { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 8px; background: var(--bg-card); padding: 4px; border-radius: 8px; transition: all 0.2s ease; width: 100%; }
+        .line-input-group { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 8px; background: var(--bg-card); padding: 4px; border-radius: 8px; transition: all 0.2s ease; width: 100%; position: relative; }
         .line-input-group.indent { padding-left: 24px; background: transparent; }
         .line-input-group textarea { flex: 1; min-height: 48px; height: auto; padding: 6px 8px; line-height: 1.4; font-size: 0.9rem; }
         .line-input-group.is-parent textarea { font-weight: 800 !important; color: var(--color-olive-dark); }
         
         .btn-tree-toggle { background: none; border: none; color: var(--color-olive); padding: 10px 6px; cursor: pointer; font-size: 1rem; width: 28px; display: flex; justify-content: center; }
-        .btn-del-line { background: none; border: none; color: var(--text-secondary); padding: 10px 4px; cursor: pointer; }
+        .btn-del-line { background: none; border: none; color: var(--text-secondary); padding: 4px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+
+        /* [추가] 우측 버튼 컨트롤 정렬 (삭제, 드래그 핸들) */
+        .line-controls-right { display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; gap: 6px; padding: 4px 2px; }
+        
+        /* [추가] 드래그 핸들 (3선) 스타일 */
+        .drag-handle { color: var(--color-coral); cursor: grab; font-size: 1.2rem; padding: 4px; touch-action: none; }
+        .drag-handle:active { cursor: grabbing; }
+        
+        /* [추가] 중간 행 삽입 버튼 스타일 (화살표) */
+        .btn-insert-below { text-align: center; color: var(--color-coral); cursor: pointer; margin: -6px 0 2px 0; z-index: 10; position: relative; font-size: 1.5rem; line-height: 1; transition: transform 0.1s; }
+        .btn-insert-below:active { transform: scale(1.1); }
+        .btn-insert-below i { background: var(--bg-card); padding: 0 10px; border-radius: 4px; }
+
+        /* [추가] 드래그 앤 드롭 효과 CSS */
+        .line-input-group.dragging { opacity: 0.4; border: 2px dashed var(--color-coral); }
+        .line-input-group.drag-over { border-top: 2px solid var(--color-coral); }
 
         .all-select-wrap { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); }
         .all-select-wrap input { width: 16px !important; height: 16px !important; accent-color: var(--color-olive); cursor: pointer; }
 
         .capture-wrapper { background: var(--bg-card); padding: 4px; border-radius: 10px; }
         
-        /* [수정] color 규칙을 고정값 대신 변수(var(--text-primary))로 연동 */
         .result-view { white-space: pre-wrap; background: var(--input-bg); padding: 16px; border-radius: 10px; border: 1px solid var(--border-color); line-height: 1.6; font-size: 0.9rem; color: var(--text-primary); }
         
-        /* [추정/추가] 다크모드 대응 결과창 내부 글자 색상 명시 */
         [data-theme="dark"] .result-view { color: #f5f5f0; }
 
-        /* [추가] 캡처 전용 강제 라이트모드 타겟팅 스타일 */
         .forced-light {
             --bg-card: #ffffff !important;
             --input-bg: #f4f4f0 !important;
@@ -262,6 +275,9 @@
             contents: {}
         };
 
+        // 드래그 앤 드롭을 위한 상태 변수
+        let dragInfo = null;
+
         window.onload = () => {
             const saved = localStorage.getItem('olive_pwa_data_v4_tree');
             if(saved) state = JSON.parse(saved);
@@ -386,7 +402,7 @@
             if(state.selected.length === 0) return alert("진행할 안건을 최소 하나 선택해주세요.");
             
             state.selected.forEach(a => { 
-                if(!state.contents[a]) {
+                if(!state.contents[a] || state.contents[a].length === 0) {
                     state.contents[a] = [{ text: "", indent: false }]; 
                 }
             });
@@ -405,21 +421,79 @@
                             ${arr.map((item, i) => {
                                 const isParent = (i < arr.length - 1 && arr[i+1].indent && !item.indent);
                                 return `
-                                    <div class="line-input-group ${item.indent ? 'indent' : ''} ${isParent ? 'is-parent' : ''}">
+                                    <div class="line-input-group ${item.indent ? 'indent' : ''} ${isParent ? 'is-parent' : ''}"
+                                         draggable="true"
+                                         ondragstart="handleDragStart(event, '${a}', ${i})"
+                                         ondragover="handleDragOver(event)"
+                                         ondragleave="handleDragLeave(event)"
+                                         ondrop="handleDrop(event, '${a}', ${i})"
+                                         ondragend="handleDragEnd(event)">
                                         <button class="btn-tree-toggle" onclick="toggleTreeIndent('${a}', ${i})">
                                             <i class="fa-solid ${item.indent ? 'fa-chevron-left' : 'fa-chevron-right'}"></i>
                                         </button>
                                         <textarea placeholder="${item.indent ? '상세 내용을 입력하세요' : '주요 아젠다를 입력하세요'}" oninput="updateLine('${a}', ${i}, this.value)">${item.text}</textarea>
-                                        <button class="btn-del-line" onclick="delLine('${a}', ${i})"><i class="fa-solid fa-minus"></i></button>
+                                        <div class="line-controls-right">
+                                            <button class="btn-del-line" onclick="delLine('${a}', ${i})"><i class="fa-solid fa-minus"></i></button>
+                                            <i class="fa-solid fa-bars drag-handle" title="드래그하여 위치 변경"></i>
+                                        </div>
                                     </div>
+                                    ${i < arr.length - 1 ? `<div class="btn-insert-below" onclick="insertLineBelow('${a}', ${i})" title="아래에 행 추가"><i class="fa-solid fa-caret-down"></i></div>` : ''}
                                 `;
                             }).join('')}
                         </div>
-                        <button class="btn btn-outline btn-small" onclick="addLine('${a}')" style="width:100%; margin-top:4px;">+ 내용 행 추가</button>
+                        <button class="btn btn-outline btn-small" onclick="addLine('${a}')" style="width:100%; margin-top:8px;">+ 내용 행 추가</button>
                     </div>
                 `;
             }).join('');
         }
+
+        /* --- 새로 추가된 드래그 앤 드롭 및 중간 삽입 기능 --- */
+        function handleDragStart(e, agenda, index) {
+            dragInfo = { agenda, index };
+            e.dataTransfer.effectAllowed = 'move';
+            // 비동기로 클래스를 추가해야 드래그 중인 원본이 흐려지면서 고스트 이미지도 정상 출력됨
+            setTimeout(() => e.target.classList.add('dragging'), 0);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            const target = e.target.closest('.line-input-group');
+            if(target) target.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            const target = e.target.closest('.line-input-group');
+            if(target) target.classList.remove('drag-over');
+        }
+
+        function handleDrop(e, targetAgenda, targetIndex) {
+            e.preventDefault();
+            const target = e.target.closest('.line-input-group');
+            if(target) target.classList.remove('drag-over');
+            
+            // 동일한 안건 내부에서만 이동 가능
+            if (dragInfo && dragInfo.agenda === targetAgenda && dragInfo.index !== targetIndex) {
+                const list = state.contents[targetAgenda];
+                const item = list.splice(dragInfo.index, 1)[0]; // 드래그한 아이템 제거
+                list.splice(targetIndex, 0, item); // 놓은 위치에 삽입
+                renderWriteZone();
+                save();
+            }
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            dragInfo = null;
+            document.querySelectorAll('.line-input-group').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        // 중간에 행 추가하는 기능
+        function insertLineBelow(a, i) {
+            state.contents[a].splice(i + 1, 0, { text: "", indent: false });
+            renderWriteZone();
+            save();
+        }
+        /* ---------------------------------------------------- */
 
         function toggleTreeIndent(a, i) {
             state.contents[a][i].indent = !state.contents[a][i].indent;
@@ -432,7 +506,7 @@
         function updateLine(a, i, val) { state.contents[a][i].text = val; save(); }
 
         function getRawReport() {
-            let res = `📝 [회의록] ${state.title || '중례'}\n`;
+            let res = `📝 [회의록] ${state.title || '미팅데이터'}\n`;
             res += `일시: ${document.getElementById('meet-date').value.replace('T',' ')}\n`;
             res += `참석자: ${state.members.length > 0 ? state.members.join(', ') : '-'}\n`;
             res += `--------------------------\n`;
@@ -474,19 +548,16 @@
             }
         }
 
-        /* [수정] 캡처 전용 화이트/라이트 모드 강제 토글 로직 구현 완료 */
         function downloadAsPNG() {
             const wrapper = document.getElementById('capture-area');
             
-            // 1. html2canvas 촬영 전, 라이트모드 스타일 강제 클래스 부여
             wrapper.classList.add('forced-light');
 
             html2canvas(wrapper, {
                 scale: 2, 
-                backgroundColor: '#ffffff', // 이미지 배경색을 무조건 흰색으로 강제 고정
+                backgroundColor: '#ffffff',
                 useCORS: true
             }).then(canvas => {
-                // 2. 캡처 직후 스타일 원상 복구 (유저 화면 깜빡임 차단)
                 wrapper.classList.remove('forced-light');
 
                 const link = document.createElement('a');
@@ -496,7 +567,7 @@
                 link.click();
                 document.body.removeChild(link);
             }).catch(err => {
-                wrapper.classList.remove('forced-light'); // 에러 시에도 안전하게 클래스 제거
+                wrapper.classList.remove('forced-light');
                 alert('이미지 생성 실패. 다시 시도해 주세요.');
                 console.error(err);
             });
