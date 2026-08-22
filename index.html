@@ -325,8 +325,8 @@
 </head>
 <body>
     <!-- Chosen Palette: Olive Green & Warm Neutrals -->
-    <!-- Application Structure Plan: Multi-step interactive form architecture (Setup -> Agenda Selection -> Hierarchical Note Taking -> Result & Cross-Platform iOS/Android Export) designed for rapid meeting record generation and seamless mobile sharing. -->
-    <!-- Visualization & Content Choices: Interactive Dynamic Forms, Step-indicator Navigation, Tree-structured Indent Textarea Blocks, Html2Canvas Export, iOS-Compatible Web Share API Integration -> Designed for maximum input speed and cross-platform mobile compatibility without using SVG graphics or Mermaid JS. -->
+    <!-- Application Structure Plan: Multi-step interactive form architecture (Setup -> Agenda Selection -> Hierarchical Note Taking -> Result & Platform-Specific PC/Mobile File Export) designed for rapid meeting record generation and tailored mobile/desktop saving. -->
+    <!-- Visualization & Content Choices: Interactive Dynamic Forms, Step-indicator Navigation, Tree-structured Indent Textarea Blocks, Html2Canvas Export with PC direct download & Mobile native share sheet -> Designed for optimized user experience without SVG graphics or Mermaid JS. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <header>
@@ -487,6 +487,11 @@
             selected: [],
             contents: {}
         };
+
+        function isMobileDevice() {
+            return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0 && /Macintosh|MacIntel/i.test(navigator.userAgent));
+        }
 
         window.onload = () => {
             const savedTheme = localStorage.getItem('olive_pwa_theme');
@@ -801,9 +806,22 @@
                         return;
                     }
 
+                    // 1. PC / Desktop Environment -> Direct Download File
+                    if (!isMobileDevice()) {
+                        const link = document.createElement('a');
+                        link.download = fileName;
+                        link.href = URL.createObjectURL(blob);
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+                        showToast("이미지 파일이 다운로드되었습니다.");
+                        return;
+                    }
+
+                    // 2. Mobile Environment -> Native Share Sheet (Save to Photos / Share)
                     const file = new File([blob], fileName, { type: 'image/png' });
 
-                    // 1. iOS / Mobile Web Share API with Files
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         try {
                             await navigator.share({
@@ -811,29 +829,16 @@
                                 title: state.title || '회의록 이미지',
                                 text: '회의록 이미지 저장'
                             });
-                            showToast("이미지 공유 및 저장 창이 열렸습니다.");
+                            showToast("공유 시트가 열렸습니다. [이미지 저장]을 선택하세요.");
                             return;
                         } catch (err) {
                             if (err.name === 'AbortError') return;
                         }
                     }
 
-                    // 2. Mobile Browser Fallback (iOS Safari / In-App WebView)
-                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-                    if (isIOS) {
-                        openImageModal(canvas.toDataURL('image/png'));
-                        return;
-                    }
+                    // 3. Fallback for mobile browsers unsupported by Web Share API
+                    openImageModal(canvas.toDataURL('image/png'));
 
-                    // 3. PC Desktop / Standard Chrome File Download
-                    const link = document.createElement('a');
-                    link.download = fileName;
-                    link.href = URL.createObjectURL(blob);
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-                    showToast("이미지가 다운로드되었습니다.");
                 }, 'image/png');
 
             }).catch(err => {
@@ -847,26 +852,29 @@
             const reportText = getRawReport();
             const fileName = `회의록_${state.title || '회의'}.txt`;
             const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
-            const file = new File([blob], fileName, { type: 'text/plain' });
 
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                navigator.share({
-                    files: [file],
-                    title: state.title || '회의록 파일',
-                    text: reportText
-                }).catch(err => {
-                    if (err.name !== 'AbortError') console.error(err);
-                });
-            } else {
-                const link = document.createElement('a');
-                link.download = fileName;
-                link.href = URL.createObjectURL(blob);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-                showToast("TXT 파일이 다운로드되었습니다.");
+            if (isMobileDevice()) {
+                const file = new File([blob], fileName, { type: 'text/plain' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        files: [file],
+                        title: state.title || '회의록 파일',
+                        text: reportText
+                    }).catch(err => {
+                        if (err.name !== 'AbortError') console.error(err);
+                    });
+                    return;
+                }
             }
+
+            const link = document.createElement('a');
+            link.download = fileName;
+            link.href = URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+            showToast("TXT 파일이 다운로드되었습니다.");
         }
 
         function openThemeModal() { document.getElementById('theme-modal').classList.add('active'); }
