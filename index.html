@@ -310,7 +310,7 @@
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-card {
-            background: var(--bg-card); padding: 28px 20px; border-radius: 24px; width: 90%; max-width: 320px;
+            background: var(--bg-card); padding: 28px 20px; border-radius: 24px; width: 90%; max-width: 360px;
             box-shadow: var(--shadow-md); transform: scale(0.9); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
         }
         .modal-overlay.active .modal-card { transform: scale(1); }
@@ -325,8 +325,8 @@
 </head>
 <body>
     <!-- Chosen Palette: Olive Green & Warm Neutrals -->
-    <!-- Application Structure Plan: Multi-step interactive form architecture (Setup -> Agenda Selection -> Hierarchical Note Taking -> Result & Multi-format Export) designed for rapid meeting record generation and seamless mobile/desktop sharing. -->
-    <!-- Visualization & Content Choices: Interactive Dynamic Forms, Step-indicator Navigation, Tree-structured Indent Textarea Blocks, Html2Canvas Export, Web Share API Integration -> Designed for maximum input speed and readability on both desktop and mobile web browsers without using SVG graphics or Mermaid JS. -->
+    <!-- Application Structure Plan: Multi-step interactive form architecture (Setup -> Agenda Selection -> Hierarchical Note Taking -> Result & Cross-Platform iOS/Android Export) designed for rapid meeting record generation and seamless mobile sharing. -->
+    <!-- Visualization & Content Choices: Interactive Dynamic Forms, Step-indicator Navigation, Tree-structured Indent Textarea Blocks, Html2Canvas Export, iOS-Compatible Web Share API Integration -> Designed for maximum input speed and cross-platform mobile compatibility without using SVG graphics or Mermaid JS. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <header>
@@ -421,17 +421,17 @@
             </div>
 
             <div class="grid-2" style="gap: 8px;">
-                <button class="btn btn-primary" onclick="shareToSlack()" style="padding: 14px 8px; font-size: 0.95rem;">
-                    <i class="fa-brands fa-slack"></i> Slack 전송
+                <button class="btn btn-primary" onclick="shareNative()" style="padding: 14px 8px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-share-nodes"></i> 회의록 공유
                 </button>
                 <button class="btn btn-outline" onclick="copyText()" style="padding: 14px 8px; font-size: 0.95rem;">
                     <i class="fa-regular fa-copy"></i> 텍스트 복사
                 </button>
-                <button class="btn btn-outline" onclick="downloadAsPNG()" style="padding: 14px 8px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-file-image"></i> 사진 저장(PC)
+                <button class="btn btn-outline" onclick="saveAsImage()" style="padding: 14px 8px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-image"></i> 사진으로 저장
                 </button>
-                <button class="btn btn-outline" onclick="downloadAsPNG()" style="padding: 14px 8px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-images"></i> 사진첩 저장(APP)
+                <button class="btn btn-outline" onclick="downloadAsTextFile()" style="padding: 14px 8px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-file-lines"></i> TXT 파일 저장
                 </button>
             </div>
             
@@ -452,6 +452,15 @@
                 <button class="btn btn-outline" id="modal-btn-cancel">취소</button>
                 <button class="btn btn-primary text-danger" id="modal-btn-confirm" style="background:var(--color-accent); color:white; border:none;">확인</button>
             </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="image-modal">
+        <div class="modal-card" style="max-width: 90vw; max-height: 85vh; overflow-y: auto;">
+            <div class="modal-title">사진첩 저장 안내</div>
+            <div class="modal-desc" style="margin-bottom: 12px; font-size: 0.88rem;">아래 이미지를 <b>길게 누른 뒤</b><br>[사진 앱에 추가]를 눌러 저장하세요.</div>
+            <img id="modal-img-preview" src="" style="width: 100%; height: auto; border-radius: 12px; border: 2px solid var(--border-color); margin-bottom: 16px;">
+            <button class="btn btn-primary" onclick="closeImageModal()">닫기</button>
         </div>
     </div>
 
@@ -541,6 +550,15 @@
             document.getElementById('custom-confirm-modal').classList.remove('active');
             if (confirmCallback) confirmCallback();
         };
+
+        function openImageModal(imgDataUrl) {
+            document.getElementById('modal-img-preview').src = imgDataUrl;
+            document.getElementById('image-modal').classList.add('active');
+        }
+
+        function closeImageModal() {
+            document.getElementById('image-modal').classList.remove('active');
+        }
 
         function save() { 
             state.title = document.getElementById('meet-title').value;
@@ -750,37 +768,105 @@
             document.body.removeChild(textArea);
         }
 
-        async function shareToSlack() {
+        async function shareNative() {
             const reportText = getRawReport();
             if (navigator.share) {
-                try { await navigator.share({ title: state.title || '회의록 전송', text: reportText }); } 
-                catch (err) { console.log('공유 취소:', err); }
+                try { 
+                    await navigator.share({ 
+                        title: state.title || '회의록', 
+                        text: reportText 
+                    }); 
+                } catch (err) { 
+                    if (err.name !== 'AbortError') console.log('공유 실패:', err); 
+                }
             } else {
                 copyText();
-                showToast("공유 기능을 지원하지 않는 기기라 클립보드에 자동 복사했습니다.");
+                showToast("기기가 시스템 공유를 지원하지 않아 클립보드에 복사했습니다.");
             }
         }
 
-        function downloadAsPNG() {
+        function saveAsImage() {
             const wrapper = document.getElementById('capture-area');
             wrapper.classList.add('forced-light');
 
             html2canvas(wrapper, {
                 scale: 2, backgroundColor: '#F7FAF5', useCORS: true
-            }).then(canvas => {
+            }).then(async canvas => {
                 wrapper.classList.remove('forced-light');
-                const link = document.createElement('a');
-                link.download = `회의록_${state.title || '회의'}.png`;
-                link.href = canvas.toDataURL('image/png');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                showToast("이미지가 저장되었습니다.");
+                const fileName = `회의록_${state.title || '회의'}.png`;
+
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        showToast('이미지 생성에 실패했습니다.');
+                        return;
+                    }
+
+                    const file = new File([blob], fileName, { type: 'image/png' });
+
+                    // 1. iOS / Mobile Web Share API with Files
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                files: [file],
+                                title: state.title || '회의록 이미지',
+                                text: '회의록 이미지 저장'
+                            });
+                            showToast("이미지 공유 및 저장 창이 열렸습니다.");
+                            return;
+                        } catch (err) {
+                            if (err.name === 'AbortError') return;
+                        }
+                    }
+
+                    // 2. Mobile Browser Fallback (iOS Safari / In-App WebView)
+                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                    if (isIOS) {
+                        openImageModal(canvas.toDataURL('image/png'));
+                        return;
+                    }
+
+                    // 3. PC Desktop / Standard Chrome File Download
+                    const link = document.createElement('a');
+                    link.download = fileName;
+                    link.href = URL.createObjectURL(blob);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+                    showToast("이미지가 다운로드되었습니다.");
+                }, 'image/png');
+
             }).catch(err => {
                 wrapper.classList.remove('forced-light');
                 showToast('이미지 생성 실패. 다시 시도해 주세요.');
                 console.error(err);
             });
+        }
+
+        function downloadAsTextFile() {
+            const reportText = getRawReport();
+            const fileName = `회의록_${state.title || '회의'}.txt`;
+            const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
+            const file = new File([blob], fileName, { type: 'text/plain' });
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({
+                    files: [file],
+                    title: state.title || '회의록 파일',
+                    text: reportText
+                }).catch(err => {
+                    if (err.name !== 'AbortError') console.error(err);
+                });
+            } else {
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = URL.createObjectURL(blob);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+                showToast("TXT 파일이 다운로드되었습니다.");
+            }
         }
 
         function openThemeModal() { document.getElementById('theme-modal').classList.add('active'); }
