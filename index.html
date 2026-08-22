@@ -2,112 +2,93 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OLIVE Meeting Room</title>
-    <link rel="manifest" href="manifest.json">
-    <link class="no-print" rel="apple-touch-icon" href="icon-180.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
     <style>
         :root {
-            /* 🌿 올리브영 (기본) 테마 */
             --bg-body: #F7FAF5;
             --bg-card: #FFFFFF;
             --text-main: #2A3622;
             --text-muted: #7E8C73;
             --border-color: #E2EBDD;
             --input-bg: #F2F8ED;
-            
             --color-primary: #9BCE26;
             --color-primary-dark: #84B41C;
             --color-accent: #FF7878;
-            
             --shadow-sm: 0 2px 8px rgba(155, 206, 38, 0.1);
             --shadow-md: 0 8px 16px -4px rgba(155, 206, 38, 0.15);
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         [data-theme="dark"] {
-            /* 🌙 다크 모드 (그레이 베이스) */
             --bg-body: #121212;
             --bg-card: #1E1E1E;
             --text-main: #E0E0E0;
             --text-muted: #888888;
             --border-color: #333333;
             --input-bg: #1A1A1A;
-            
             --color-primary: #B0B0B0;
             --color-primary-dark: #FFFFFF;
             --color-accent: #FF6B6B;
-            
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 8px 16px -4px rgba(0, 0, 0, 0.5);
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
         [data-theme="blue"] {
-            /* 🌊 파랑 & 다크 테마 */
             --bg-body: #F4F6F9;
             --bg-card: #FFFFFF;
             --text-main: #1C1C1D;
             --text-muted: #6B7280;
             --border-color: #DDE4F2;
             --input-bg: #F8FAFC;
-            
             --color-primary: #2043BF;
             --color-primary-dark: #173296;
             --color-accent: #1C1C1D;
-            
             --shadow-sm: 0 2px 8px rgba(32, 67, 191, 0.1);
             --shadow-md: 0 8px 16px -4px rgba(32, 67, 191, 0.15);
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         [data-theme="yellow"] {
-            /* 🌕 옐로우 & 다크 테마 */
             --bg-body: #FFFDF5;
             --bg-card: #FFFFFF;
             --text-main: #160C28;
             --text-muted: #6B6875;
             --border-color: #F2EACC;
             --input-bg: #FCFAF2;
-            
             --color-primary: #EDC65B;
             --color-primary-dark: #D4B04C;
             --color-accent: #160C28;
-            
             --shadow-sm: 0 2px 8px rgba(237, 198, 91, 0.1);
             --shadow-md: 0 8px 16px -4px rgba(237, 198, 91, 0.15);
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         [data-theme="purple"] {
-            /* 🍇 연보라 & 핑크 테마 */
             --bg-body: #F8F6FA;
             --bg-card: #FFFFFF;
             --text-main: #332A3B;
             --text-muted: #8B8096;
             --border-color: #E7E1EE;
             --input-bg: #F9F8FC;
-            
             --color-primary: #AD8CEB;
             --color-primary-dark: #8F6DCB;
             --color-accent: #FF94B8;
-            
             --shadow-sm: 0 2px 8px rgba(173, 140, 235, 0.1);
             --shadow-md: 0 8px 16px -4px rgba(173, 140, 235, 0.15);
             --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, system-ui, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         
         body { 
             background-color: var(--bg-body); 
             color: var(--text-main); 
-            padding: 4px; /* 기존 16px에서 대폭 축소하여 좌우 영역 확보 */
+            padding: 12px; 
             max-width: 800px; 
             margin: 0 auto; 
             min-height: 100vh;
@@ -116,11 +97,11 @@
 
         header { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 5px 7px; /* 여백 축소 */
+            padding: 12px 16px;
             background: var(--bg-card);
-            border-radius: 16px; /* 둥글기 최적화 */
+            border-radius: 16px;
             box-shadow: var(--shadow-sm); 
-            margin-bottom: 7px;
+            margin-bottom: 12px;
         }
         
         h1 { font-size: 1.25rem; color: var(--color-primary-dark); font-weight: 800; letter-spacing: -0.5px; }
@@ -132,7 +113,7 @@
 
         .step-indicator { 
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 8px; padding: 0 6px;
+            margin-bottom: 16px; padding: 0 6px;
         }
         .step-node {
             width: 28px; height: 28px; border-radius: 50%;
@@ -152,8 +133,8 @@
         .step-line.active { background: var(--color-primary); }
 
         .card { 
-            background: var(--bg-card); border-radius: 8px; padding: 8px;
-            margin-bottom: 6px; box-shadow: var(--shadow-md); transition: all 0.3s;
+            background: var(--bg-card); border-radius: 16px; padding: 16px;
+            margin-bottom: 12px; box-shadow: var(--shadow-md); transition: all 0.3s;
         }
         .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .card-header-flex h2 { margin-bottom: 0; }
@@ -170,7 +151,6 @@
         input:focus, textarea:focus { border-color: var(--color-primary); background: var(--bg-card); }
         input[type="datetime-local"] { -webkit-appearance: none; appearance: none; }
         
-        /* [수정] iOS 체크박스 디자인 오류 완벽 해결 (커스텀 디자인 적용) */
         input[type="checkbox"] {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -221,7 +201,7 @@
         
         .btn-small { width: auto; padding: 10px 16px; font-size: 0.9rem; border-radius: 10px; flex-shrink: 0; box-shadow: none; }
 
-        .flex-row { display: flex; gap: 6px; width: 100%; }
+        .flex-row { display: flex; gap: 8px; width: 100%; }
         
         .list-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; min-height: 24px; }
         .tag-item { 
@@ -242,12 +222,12 @@
         .select-item-label span { font-size: 0.95rem; font-weight: 600; }
 
         .agenda-write-card { 
-            border: 2px solid var(--border-color); border-radius: 12px; padding: 6px; 
-            margin-bottom: 6px; background: var(--bg-card); 
+            border: 2px solid var(--border-color); border-radius: 12px; padding: 12px; 
+            margin-bottom: 12px; background: var(--bg-card); 
         }
         .agenda-write-card h3 { 
-            font-size: 0.95rem; color: var(--text-main); margin-bottom: 6px; display: inline-flex; align-items: center; gap: 6px;
-            background: var(--input-bg); padding: 6px 6px; border-radius: 10px; border: 1px solid var(--border-color);
+            font-size: 0.95rem; color: var(--text-main); margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px;
+            background: var(--input-bg); padding: 6px 12px; border-radius: 10px; border: 1px solid var(--border-color);
         }
         .agenda-write-card h3 i { color: var(--color-primary); }
         
@@ -267,7 +247,7 @@
         }
         .line-input-group.is-parent textarea {
             font-weight: 800 !important;
-            color: var(--color-olive-dark) !important;
+            color: var(--color-primary-dark) !important;
         }
         .btn-tree-toggle { background: none; border: none; color: var(--text-muted); padding: 10px 4px; cursor: pointer; font-size: 1rem; width: 24px; transition: color 0.2s;}
         .btn-tree-toggle:hover { color: var(--color-primary); }
@@ -287,7 +267,7 @@
 
         .all-select-wrap { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; color: var(--text-muted); }
 
-        .capture-wrapper { background: var(--bg-card); padding: 4px; border-radius: 16px; margin-bottom: 16px; }
+        .capture-wrapper { background: var(--bg-card); padding: 8px; border-radius: 16px; margin-bottom: 16px; }
         .result-view { 
             white-space: pre-wrap; background: var(--input-bg); 
             padding: 20px; border-radius: 16px; border: 2px solid var(--border-color); 
@@ -338,13 +318,16 @@
         .modal-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
         .modal-actions { display: flex; gap: 8px; }
 
-        /* [추가] 테마 선택 리스트 버튼 디자인 */
         .theme-color-preview { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
         .theme-list-btn { margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 2px solid transparent; background: var(--input-bg); color: var(--text-main); font-weight: 600; padding: 12px 16px;}
         .theme-list-btn:hover { border-color: var(--color-primary); }
     </style>
 </head>
 <body>
+    <!-- Chosen Palette: Olive Green & Warm Neutrals -->
+    <!-- Application Structure Plan: Multi-step interactive form architecture (Setup -> Agenda Selection -> Hierarchical Note Taking -> Result & Multi-format Export) designed for rapid meeting record generation and seamless mobile/desktop sharing. -->
+    <!-- Visualization & Content Choices: Interactive Dynamic Forms, Step-indicator Navigation, Tree-structured Indent Textarea Blocks, Html2Canvas Export, Web Share API Integration -> Designed for maximum input speed and readability on both desktop and mobile web browsers without using SVG graphics or Mermaid JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <header>
         <h1><i>OLIVE <span>Meeting Room</span></i></h1>
@@ -361,7 +344,6 @@
         <div class="step-node" id="step-node-4"><i class="fa-solid fa-check"></i></div>
     </div>
 
-    <!-- 1단계: 기본 설정 -->
     <div id="step-setup">
         <div class="card">
             <h2>기본 정보</h2>
@@ -402,7 +384,6 @@
         </div>
     </div>
 
-    <!-- 2단계: 안건 선택 -->
     <div id="step-select" class="hidden">
         <div class="card">
             <div class="card-header-flex">
@@ -420,7 +401,6 @@
         </div>
     </div>
 
-    <!-- 3단계: 회의 진행 기록 -->
     <div id="step-write" class="hidden">
         <div class="card">
             <h2>진행 기록</h2>
@@ -432,7 +412,6 @@
         </div>
     </div>
 
-    <!-- 4단계: 결과 확인 및 공유 -->
     <div id="step-result" class="hidden">
         <div class="card">
             <h2>최종 회의록</h2>
@@ -441,15 +420,19 @@
                 <div class="result-view" id="result-text"></div>
             </div>
 
-            <div class="mt-20">
-                <button class="btn btn-primary" onclick="shareToSlack()" style="padding: 18px; font-size: 1.05rem;">
-                    <i class="fa-brands fa-slack"></i> Slack 앱 전송하기 (모바일전용)
+            <div class="grid-2" style="gap: 8px;">
+                <button class="btn btn-primary" onclick="shareToSlack()" style="padding: 14px 8px; font-size: 0.95rem;">
+                    <i class="fa-brands fa-slack"></i> Slack 전송
                 </button>
-            </div>
-
-            <div class="grid-2 mt-12">
-                <button class="btn btn-outline" onclick="copyText()"><i class="fa-regular fa-copy"></i>텍스트 복사</button>
-                <button class="btn btn-outline" onclick="downloadAsPNG()"><i class="fa-solid fa-file-image"></i>사진(PNG) 저장</button>
+                <button class="btn btn-outline" onclick="copyText()" style="padding: 14px 8px; font-size: 0.95rem;">
+                    <i class="fa-regular fa-copy"></i> 텍스트 복사
+                </button>
+                <button class="btn btn-outline" onclick="downloadAsPNG()" style="padding: 14px 8px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-file-image"></i> 사진 저장(PC)
+                </button>
+                <button class="btn btn-outline" onclick="downloadAsPNG()" style="padding: 14px 8px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-images"></i> 사진첩 저장(APP)
+                </button>
             </div>
             
             <div class="grid-2 mt-20" style="border-top: 2px dashed var(--border-color); padding-top: 20px;">
@@ -459,7 +442,6 @@
         </div>
     </div>
 
-    <!-- 기타 모달 및 알림 영역 -->
     <div class="toast-container" id="toast-container"></div>
 
     <div class="modal-overlay" id="custom-confirm-modal">
@@ -473,7 +455,6 @@
         </div>
     </div>
 
-    <!-- [추가] 테마 선택 모달 -->
     <div class="modal-overlay" id="theme-modal">
         <div class="modal-card">
             <div class="modal-title">테마 설정</div>
@@ -499,7 +480,6 @@
         };
 
         window.onload = () => {
-            // [추가] 저장된 테마 불러오기
             const savedTheme = localStorage.getItem('olive_pwa_theme');
             if(savedTheme && savedTheme !== 'light') {
                 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -707,7 +687,7 @@
         function updateLine(a, i, val) { state.contents[a][i].text = val; save(); }
 
         function getRawReport() {
-            let res = `📝 [회의록] ${state.title || '중례'}\n`;
+            let res = `📝 [회의록] ${state.title || '주간 회의'}\n`;
             res += `일시: ${document.getElementById('meet-date').value.replace('T',' ')}\n`;
             res += `참석자: ${state.members.length > 0 ? state.members.join(', ') : '-'}\n`;
             res += `--------------------------\n`;
@@ -717,7 +697,7 @@
                     state.contents[a].forEach(item => { 
                         if(item.text.trim()) {
                             if(item.indent) {
-                                const subLines = item.text.split('\n').map((subLine, idx) => idx === 0 ? `   ◦ ${subLine}` : `     ${subLine}`).join('\n');
+                                const subLines = item.text.split('\n').map((subLine, idx) => idx === 0 ? `    ◦ ${subLine}` : `      ${subLine}`).join('\n');
                                 res += `${subLines}\n`;
                             } else {
                                 const formattedLine = item.text.split('\n').map((subLine, idx) => idx === 0 ? ` - ${subLine}` : `   ${subLine}`).join('\n');
@@ -736,17 +716,13 @@
             switchStep(4);
         }
 
-        // 복사 에러 완벽 해결 (우회 방식 포함)
         function copyText() { 
             const textToCopy = getRawReport();
-
-            // 1. 최신 Clipboard API 시도 (보안 컨텍스트에서만 작동)
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(textToCopy)
                     .then(() => showToast("텍스트가 클립보드에 복사되었습니다."))
                     .catch(err => fallbackCopyTextToClipboard(textToCopy));
             } else {
-                // 2. 구형 우회 방식 시도 (http 환경, 모바일 웹뷰 등)
                 fallbackCopyTextToClipboard(textToCopy);
             }
         }
@@ -754,12 +730,9 @@
         function fallbackCopyTextToClipboard(text) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
-            
-            // 화면 밖으로 밀어내기 (스크롤 튀는 현상 방지)
             textArea.style.position = "fixed";
             textArea.style.top = "0";
             textArea.style.left = "-999999px";
-            
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
@@ -797,7 +770,7 @@
             }).then(canvas => {
                 wrapper.classList.remove('forced-light');
                 const link = document.createElement('a');
-                link.download = `회의록_${state.title || '중례'}.png`;
+                link.download = `회의록_${state.title || '회의'}.png`;
                 link.href = canvas.toDataURL('image/png');
                 document.body.appendChild(link);
                 link.click();
@@ -810,7 +783,6 @@
             });
         }
 
-        /* [수정] 다중 테마 선택 로직 추가 */
         function openThemeModal() { document.getElementById('theme-modal').classList.add('active'); }
         function closeThemeModal() { document.getElementById('theme-modal').classList.remove('active'); }
         function setTheme(themeName) {
