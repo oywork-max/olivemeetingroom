@@ -16,7 +16,7 @@
             --border-color: #E2EBDD;
             --input-bg: #F2F8ED;
             --color-primary: #9BCE26;
-            --color-primary-dark: #84B41C;
+            --color-primary-dark: #7CA81B;
             --color-accent: #FF7878;
             --shadow-sm: 0 2px 8px rgba(155, 206, 38, 0.1);
             --shadow-md: 0 8px 16px -4px rgba(155, 206, 38, 0.15);
@@ -227,9 +227,9 @@
         }
         .agenda-write-card h3 { 
             font-size: 0.95rem; color: var(--text-main); margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px;
-            background: var(--input-bg); padding: 6px 12px; border-radius: 10px; border: 1px solid var(--border-color);
+            background: var(--input-bg); padding: 6px 12px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 800;
         }
-        .agenda-write-card h3 i { color: var(--color-primary); }
+        .agenda-write-card h3 i { color: var(--color-primary-dark); }
         
         .line-input-group { 
             display: flex; align-items: flex-start; gap: 4px; margin-bottom: 8px; background: var(--input-bg); 
@@ -243,12 +243,20 @@
         
         .line-input-group textarea { 
             flex: 1; min-height: 20px; height: auto; padding: 10px 8px; line-height: 1.4; font-size: 0.95rem; 
-            background: transparent; border: none; box-shadow: none; resize: none;
+            background: transparent; border: none; box-shadow: none; resize: none; color: var(--text-main);
         }
-        .line-input-group.is-parent textarea {
+
+        /* 주요 내용 (상위 항목) 볼드 스타일 강조 */
+        .line-input-group:not(.indent) textarea {
             font-weight: 800 !important;
-            color: var(--color-primary-dark) !important;
+            color: var(--text-main) !important;
         }
+        
+        .line-input-group.indent textarea {
+            font-weight: 400 !important;
+            color: var(--text-muted) !important;
+        }
+
         .btn-tree-toggle { background: none; border: none; color: var(--text-muted); padding: 10px 4px; cursor: pointer; font-size: 1rem; width: 24px; transition: color 0.2s;}
         .btn-tree-toggle:hover { color: var(--color-primary); }
         
@@ -269,15 +277,39 @@
 
         .capture-wrapper { background: var(--bg-card); padding: 8px; border-radius: 16px; margin-bottom: 16px; }
         .result-view { 
-            white-space: pre-wrap; background: var(--input-bg); 
+            background: var(--input-bg); 
             padding: 20px; border-radius: 16px; border: 2px solid var(--border-color); 
             line-height: 1.6; font-size: 0.95rem; color: var(--text-main); 
         }
+
+        /* 최종 서식 렌더링 스타일 */
+        .report-header { border-bottom: 2px dashed var(--border-color); padding-bottom: 12px; margin-bottom: 16px; }
+        .report-title { font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
+        .report-meta { font-size: 0.88rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 2px; }
+        
+        .report-agenda-block { margin-bottom: 16px; }
+        .report-agenda-title { 
+            font-weight: 800; font-size: 1rem; color: var(--color-primary-dark); 
+            display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
+            background: var(--bg-card); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border-color);
+        }
+        .report-main-item { 
+            font-weight: 800; color: var(--text-main); font-size: 0.96rem; 
+            margin-top: 8px; margin-bottom: 4px; display: flex; align-items: flex-start; gap: 6px; 
+        }
+        .report-main-item .bullet { color: var(--color-primary-dark); font-weight: 900; }
+        .report-sub-item { 
+            font-weight: 400; color: var(--text-main); font-size: 0.9rem; 
+            padding-left: 20px; margin-bottom: 4px; display: flex; align-items: flex-start; gap: 6px; 
+            opacity: 0.9;
+        }
+        .report-sub-item .bullet { color: var(--text-muted); }
 
         .forced-light {
             --bg-card: #FFFFFF !important; --input-bg: #F2F8ED !important;
             --text-main: #2A3622 !important; --border-color: #E2EBDD !important;
             --color-primary-dark: #6BB521 !important;
+            --color-primary: #9BCE26 !important;
         }
         .forced-light .result-view {
             color: #2A3622 !important; background: #F2F8ED !important; border-color: #E2EBDD !important;
@@ -326,7 +358,7 @@
 <body>
     <!-- Chosen Palette: Olive Green & Warm Neutrals -->
     <!-- Application Structure Plan: Multi-step interactive form architecture (Setup -> Agenda Selection -> Hierarchical Note Taking -> Result & Platform-Specific PC/Mobile File Export) designed for rapid meeting record generation and tailored mobile/desktop saving. -->
-    <!-- Visualization & Content Choices: Interactive Dynamic Forms, Step-indicator Navigation, Tree-structured Indent Textarea Blocks, Html2Canvas Export with PC direct download & Mobile native share sheet -> Designed for optimized user experience without SVG graphics or Mermaid JS. -->
+    <!-- Visualization & Content Choices: Interactive Dynamic Forms, Step-indicator Navigation, Tree-structured Indent Textarea Blocks, Rich HTML Result View with Bold/Color emphasis, Html2Canvas Export with PC direct download & Mobile native share sheet -> Designed for optimized user experience without SVG graphics or Mermaid JS. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <header>
@@ -493,6 +525,12 @@
                 || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0 && /Macintosh|MacIntel/i.test(navigator.userAgent));
         }
 
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
         window.onload = () => {
             const savedTheme = localStorage.getItem('olive_pwa_theme');
             if(savedTheme && savedTheme !== 'light') {
@@ -598,14 +636,14 @@
             const mList = document.getElementById('member-list');
             mList.innerHTML = state.members.map((m, i) => `
                 <div class="tag-item">
-                    ${m} <i class="fa-solid fa-xmark" onclick="delMember(${i})"></i>
+                    ${escapeHTML(m)} <i class="fa-solid fa-xmark" onclick="delMember(${i})"></i>
                 </div>
             `).join('');
             
             const aList = document.getElementById('agenda-list');
             aList.innerHTML = state.agendas.map((a, i) => `
                 <div class="tag-item">
-                    ${a} <i class="fa-solid fa-xmark" onclick="delAgenda(${i})"></i>
+                    ${escapeHTML(a)} <i class="fa-solid fa-xmark" onclick="delAgenda(${i})"></i>
                 </div>
             `).join('');
             
@@ -633,8 +671,8 @@
             const zone = document.getElementById('select-zone');
             zone.innerHTML = state.agendas.map(a => `
                 <label class="select-item-label">
-                    <input type="checkbox" value="${a}" ${state.selected.includes(a)?'checked':''} onchange="updateSingleSelect()">
-                    <span>${a}</span>
+                    <input type="checkbox" value="${escapeHTML(a)}" ${state.selected.includes(a)?'checked':''} onchange="updateSingleSelect()">
+                    <span>${escapeHTML(a)}</span>
                 </label>
             `).join('');
             
@@ -679,25 +717,24 @@
                 const arr = state.contents[a];
                 return `
                     <div class="agenda-write-card">
-                        <h3><i class="fa-solid fa-thumbtack"></i> ${a}</h3>
-                        <div id="lines-${a}">
+                        <h3><i class="fa-solid fa-thumbtack"></i> ${escapeHTML(a)}</h3>
+                        <div id="lines-${escapeHTML(a)}">
                             ${arr.map((item, i) => {
-                                const isParent = (i < arr.length - 1 && arr[i+1].indent && !item.indent);
                                 return `
-                                    <div class="line-input-group ${item.indent ? 'indent' : ''} ${isParent ? 'is-parent' : ''}">
-                                        <button class="btn-tree-toggle" onclick="toggleTreeIndent('${a}', ${i})" title="하위 항목으로 변경">
+                                    <div class="line-input-group ${item.indent ? 'indent' : ''}">
+                                        <button class="btn-tree-toggle" onclick="toggleTreeIndent('${escapeHTML(a)}', ${i})" title="${item.indent ? '주요 내용으로 변경' : '세부 내용으로 변경'}">
                                             <i class="fa-solid ${item.indent ? 'fa-angle-right' : 'fa-list-ul'}"></i>
                                         </button>
-                                        <textarea placeholder="${item.indent ? '세부 내용을 입력하세요' : '주요 내용을 입력하세요'}" oninput="updateLine('${a}', ${i}, this.value)">${item.text}</textarea>
+                                        <textarea placeholder="${item.indent ? '세부 내용을 입력하세요' : '주요 내용을 입력하세요 (자동 볼드적용)'}" oninput="updateLine('${escapeHTML(a)}', ${i}, this.value)">${escapeHTML(item.text)}</textarea>
                                         <div class="line-controls-right">
-                                            <button class="btn-del-line" onclick="delLine('${a}', ${i})" title="항목 삭제"><i class="fa-solid fa-minus"></i></button>
+                                            <button class="btn-del-line" onclick="delLine('${escapeHTML(a)}', ${i})" title="항목 삭제"><i class="fa-solid fa-minus"></i></button>
                                         </div>
                                     </div>
-                                    ${i < arr.length - 1 ? `<div class="btn-insert-below" onclick="insertLineBelow('${a}', ${i})" title="중간에 행 추가"><i class="fa-solid fa-chevron-down"></i></div>` : ''}
+                                    ${i < arr.length - 1 ? `<div class="btn-insert-below" onclick="insertLineBelow('${escapeHTML(a)}', ${i})" title="중간에 행 추가"><i class="fa-solid fa-chevron-down"></i></div>` : ''}
                                 `;
                             }).join('')}
                         </div>
-                        <button class="btn btn-outline btn-small" onclick="addLine('${a}')" style="width:100%; margin-top:8px; border-style: dashed;"><i class="fa-solid fa-plus"></i> 맨 아래 내용 추가</button>
+                        <button class="btn btn-outline btn-small" onclick="addLine('${escapeHTML(a)}')" style="width:100%; margin-top:8px; border-style: dashed;"><i class="fa-solid fa-plus"></i> 맨 아래 내용 추가</button>
                     </div>
                 `;
             }).join('');
@@ -709,6 +746,7 @@
         function delLine(a, i) { if(state.contents[a].length > 1) { state.contents[a].splice(i, 1); renderWriteZone(); save(); } }
         function updateLine(a, i, val) { state.contents[a][i].text = val; save(); }
 
+        // 텍스트/클립보드 복사용 (마크다운 볼드 적용)
         function getRawReport() {
             let res = `📝 [회의록] ${state.title || '주간 회의'}\n`;
             res += `일시: ${document.getElementById('meet-date').value.replace('T',' ')}\n`;
@@ -723,7 +761,8 @@
                                 const subLines = item.text.split('\n').map((subLine, idx) => idx === 0 ? `    ◦ ${subLine}` : `      ${subLine}`).join('\n');
                                 res += `${subLines}\n`;
                             } else {
-                                const formattedLine = item.text.split('\n').map((subLine, idx) => idx === 0 ? ` - ${subLine}` : `   ${subLine}`).join('\n');
+                                // 주요 내용은 마크다운 볼드(**) 적용
+                                const formattedLine = item.text.split('\n').map((subLine, idx) => idx === 0 ? ` ▪ **${subLine}**` : `   **${subLine}**`).join('\n');
                                 res += `${formattedLine}\n`; 
                             }
                         }
@@ -733,9 +772,61 @@
             return res;
         }
 
+        // 화면 출력 및 사진 이미지 저장용 서식화 HTML 생성 함수
+        function getFormattedHTMLReport() {
+            const dateVal = document.getElementById('meet-date').value.replace('T',' ');
+            let html = `
+                <div class="report-header">
+                    <div class="report-title">📝 ${escapeHTML(state.title || '주간 회의')}</div>
+                    <div class="report-meta">
+                        <div><b>일시:</b> ${escapeHTML(dateVal)}</div>
+                        <div><b>참석자:</b> ${state.members.length > 0 ? escapeHTML(state.members.join(', ')) : '-'}</div>
+                    </div>
+                </div>
+            `;
+
+            state.selected.forEach(a => {
+                html += `
+                    <div class="report-agenda-block">
+                        <div class="report-agenda-title"><i class="fa-solid fa-thumbtack"></i> ${escapeHTML(a)}</div>
+                `;
+
+                if(state.contents[a]) {
+                    state.contents[a].forEach(item => {
+                        if(item.text.trim()) {
+                            const lines = escapeHTML(item.text).split('\n');
+                            if(item.indent) {
+                                lines.forEach((line, idx) => {
+                                    html += `
+                                        <div class="report-sub-item">
+                                            <span class="bullet">${idx === 0 ? '◦' : '&nbsp;'}</span>
+                                            <span>${line}</span>
+                                        </div>
+                                    `;
+                                });
+                            } else {
+                                lines.forEach((line, idx) => {
+                                    html += `
+                                        <div class="report-main-item">
+                                            <span class="bullet">${idx === 0 ? '▪' : '&nbsp;'}</span>
+                                            <span>${line}</span>
+                                        </div>
+                                    `;
+                                });
+                            }
+                        }
+                    });
+                }
+
+                html += `</div>`;
+            });
+
+            return html;
+        }
+
         function renderResult() {
             save();
-            document.getElementById('result-text').innerText = getRawReport();
+            document.getElementById('result-text').innerHTML = getFormattedHTMLReport();
             switchStep(4);
         }
 
@@ -743,7 +834,7 @@
             const textToCopy = getRawReport();
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(textToCopy)
-                    .then(() => showToast("텍스트가 클립보드에 복사되었습니다."))
+                    .then(() => showToast("마크다운 볼드가 적용된 텍스트가 복사되었습니다."))
                     .catch(err => fallbackCopyTextToClipboard(textToCopy));
             } else {
                 fallbackCopyTextToClipboard(textToCopy);
@@ -763,7 +854,7 @@
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    showToast("텍스트가 클립보드에 복사되었습니다.");
+                    showToast("마크다운 볼드가 적용된 텍스트가 복사되었습니다.");
                 } else {
                     showToast("복사 실패. 결과창 텍스트를 직접 선택해주세요.");
                 }
