@@ -717,7 +717,7 @@
                 const arr = state.contents[a];
                 return `
                     <div class="agenda-write-card">
-                        <h3><i class="fa-solid fa-thumbtack"></i> ${escapeHTML(a)}</h3>
+                        <h3>📌 ${escapeHTML(a)}</h3>
                         <div id="lines-${escapeHTML(a)}">
                             ${arr.map((item, i) => {
                                 return `
@@ -725,7 +725,7 @@
                                         <button class="btn-tree-toggle" onclick="toggleTreeIndent('${escapeHTML(a)}', ${i})" title="${item.indent ? '주요 내용으로 변경' : '세부 내용으로 변경'}">
                                             <i class="fa-solid ${item.indent ? 'fa-angle-right' : 'fa-list-ul'}"></i>
                                         </button>
-                                        <textarea placeholder="${item.indent ? '세부 내용을 입력하세요' : '주요 내용을 입력하세요 (자동 볼드적용)'}" oninput="updateLine('${escapeHTML(a)}', ${i}, this.value)">${escapeHTML(item.text)}</textarea>
+                                        <textarea placeholder="${item.indent ? '세부 내용을 입력하세요' : '주요 내용을 입력하세요 (굵게 표시)'}" oninput="updateLine('${escapeHTML(a)}', ${i}, this.value)">${escapeHTML(item.text)}</textarea>
                                         <div class="line-controls-right">
                                             <button class="btn-del-line" onclick="delLine('${escapeHTML(a)}', ${i})" title="항목 삭제"><i class="fa-solid fa-minus"></i></button>
                                         </div>
