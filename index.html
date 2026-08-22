@@ -883,12 +883,14 @@
 
         function saveAsImage() {
             const wrapper = document.getElementById('capture-area');
-            wrapper.classList.add('forced-light');
 
+            const computedStyle = getComputedStyle(document.documentElement);
+            let currentBgColor = computedStyle.getPropertyValue('--bg-body').trim() || '#F7FAF5';
+            
             html2canvas(wrapper, {
-                scale: 2, backgroundColor: '#F7FAF5', useCORS: true
+                scale: 2, currentBgColor, useCORS: true
             }).then(async canvas => {
-                wrapper.classList.remove('forced-light');
+              
                 const fileName = `회의록_${state.title || '회의'}.png`;
 
                 canvas.toBlob(async (blob) => {
