@@ -2,389 +2,237 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OLIVE Meeting Room</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="manifest" href="manifest.json">
+    <link class="no-print" rel="apple-touch-icon" href="icon-180.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
-        
-        :root {
-            --bg-body: #F7FAF5;
-            --bg-card: #FFFFFF;
-            --text-main: #2A3622;
-            --text-muted: #7E8C73;
-            --border-color: #E2EBDD;
-            --input-bg: #F2F8ED;
-            --color-primary: #9BCE26;
-            --color-primary-dark: #7CA81B;
-            --color-accent: #FF7878;
-            --shadow-sm: 0 2px 8px rgba(155, 206, 38, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(155, 206, 38, 0.15);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
+        /* 1. 기본 테마 (올리브/코랄) - 눈이 편안한 #9BCE26 */
+        :root, [data-theme="default"] {
+            --bg-primary: #f9f9f7;
+            --bg-card: #ffffff;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --color-olive: #9BCE26; 
+            --color-olive-dark: #7aab15;
+            --color-coral: #FF7878;
+            --border-color: #e5e5e0;
+            --input-bg: #f4f4f0;
         }
 
+        /* 2. 다크 모드 (무채색 그레이 계열) */
         [data-theme="dark"] {
-            --bg-body: #121212;
-            --bg-card: #1E1E1E;
-            --text-main: #E0E0E0;
-            --text-muted: #888888;
+            --bg-primary: #121212;
+            --bg-card: #1e1e1e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #aaaaaa;
+            --color-olive: #888888;
+            --color-olive-dark: #cccccc;
+            --color-coral: #dc3545;
             --border-color: #333333;
-            --input-bg: #1A1A1A;
-            --color-primary: #B0B0B0;
-            --color-primary-dark: #FFFFFF;
-            --color-accent: #FF6B6B;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 8px 16px -4px rgba(0, 0, 0, 0.5);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.2);
+            --input-bg: #2a2a2a;
         }
 
-        [data-theme="blue"] {
-            --bg-body: #F4F6F9;
-            --bg-card: #FFFFFF;
-            --text-main: #1C1C1D;
-            --text-muted: #6B7280;
-            --border-color: #DDE4F2;
-            --input-bg: #F8FAFC;
-            --color-primary: #2043BF;
-            --color-primary-dark: #173296;
-            --color-accent: #1C1C1D;
-            --shadow-sm: 0 2px 8px rgba(32, 67, 191, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(32, 67, 191, 0.15);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        [data-theme="yellow"] {
-            --bg-body: #FFFDF5;
-            --bg-card: #FFFFFF;
-            --text-main: #160C28;
-            --text-muted: #6B6875;
-            --border-color: #F2EACC;
-            --input-bg: #FCFAF2;
-            --color-primary: #EDC65B;
-            --color-primary-dark: #D4B04C;
-            --color-accent: #160C28;
-            --shadow-sm: 0 2px 8px rgba(237, 198, 91, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(237, 198, 91, 0.15);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
+        /* 3. 퍼플/핑크 테마 */
         [data-theme="purple"] {
-            --bg-body: #F8F6FA;
-            --bg-card: #FFFFFF;
-            --text-main: #332A3B;
-            --text-muted: #8B8096;
-            --border-color: #E7E1EE;
-            --input-bg: #F9F8FC;
-            --color-primary: #AD8CEB;
-            --color-primary-dark: #8F6DCB;
-            --color-accent: #FF94B8;
-            --shadow-sm: 0 2px 8px rgba(173, 140, 235, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(173, 140, 235, 0.15);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
+            --bg-primary: #f8f5fa;
+            --bg-card: #ffffff;
+            --text-primary: #332b3b;
+            --text-secondary: #7f748a;
+            --color-olive: #9b59b6;
+            --color-olive-dark: #71368a;
+            --color-coral: #e84393;
+            --border-color: #eadced;
+            --input-bg: #f3ebf5;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        /* 4. 블루/그레이 테마 (요청 헥스코드 반영) */
+        [data-theme="blue"] {
+            --bg-primary: #f0f2f5;
+            --bg-card: #ffffff;
+            --text-primary: #1C1C1D;
+            --text-secondary: #666666;
+            --color-olive: #2043BF;
+            --color-olive-dark: #153090;
+            --color-coral: #dc3545;
+            --border-color: #d1d5db;
+            --input-bg: #e4e6eb;
+        }
+
+        /* 5. 옐로우/다크퍼플 테마 (요청 헥스코드 반영) */
+        [data-theme="yellow"] {
+            --bg-primary: #160C28;
+            --bg-card: #231640;
+            --text-primary: #ffffff;
+            --text-secondary: #b3a9c4;
+            --color-olive: #EDC65B;
+            --color-olive-dark: #c4a13d;
+            --color-coral: #ff7878;
+            --border-color: #3a2760;
+            --input-bg: #2d1d52;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, system-ui, sans-serif; }
         
-        body 
-            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
-            background-color: var(--bg-body); 
-            color: var(--text-main); 
-            padding: 10px; 
-            max-width: 800px; 
+        body { 
+            background-color: var(--bg-primary); 
+            color: var(--text-primary); 
+            padding: 10px 8px 20px; /* 모바일 여백 극대화 */
+            max-width: 100%; 
+            width: 1200px;
             margin: 0 auto; 
             min-height: 100vh;
-            transition: background-color 0.3s, color 0.3s;
         }
 
-        header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 12px 16px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            box-shadow: var(--shadow-sm); 
-            margin-bottom: 12px;
-        }
-        
-        h1 { font-size: 1.25rem; color: var(--color-primary-dark); font-weight: 800; letter-spacing: -0.5px; }
-        [data-theme="dark"] h1 { color: var(--color-primary); }
-        h1 span { color: var(--color-accent); font-weight: 800; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 4px; }
+        h1 { font-size: 1.2rem; color: var(--color-olive); font-weight: 800; }
+        h1 span { color: var(--color-coral); }
 
-        h2 { font-size: 1.05rem; color: var(--text-main); font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        h2::before { content: ''; display: block; width: 5px; height: 16px; background: var(--color-primary); border-radius: 4px; }
+        .step-indicator { display: flex; gap: 4px; margin-bottom: 12px; width: 100%; padding: 0 4px; }
+        .step-bar { flex: 1; height: 4px; background: var(--border-color); border-radius: 4px; }
+        .step-bar.active { background: var(--color-olive); }
 
-        .step-indicator { 
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 16px; padding: 0 6px;
-        }
-        .step-node {
-            width: 28px; height: 28px; border-radius: 50%;
-            background: var(--bg-card); color: var(--text-muted);
-            border: 2px solid var(--border-color);
-            display: flex; justify-content: center; align-items: center;
-            font-weight: 800; font-size: 0.85rem; transition: all 0.3s; z-index: 2;
-        }
-        .step-node.active {
-            background: var(--color-primary); color: #fff; border-color: var(--color-primary);
-            box-shadow: 0 2px 8px rgba(140, 163, 114, 0.4);
-        }
-        .step-line {
-            flex: 1; height: 3px; background: var(--border-color);
-            margin: 0 -4px; transition: all 0.3s; z-index: 1; border-radius: 2px;
-        }
-        .step-line.active { background: var(--color-primary); }
+        .card { background: var(--bg-card); border-radius: 12px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 4px; }
+        .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-left: 3px solid var(--color-olive); padding-left: 6px; }
+        h2 { font-size: 0.95rem; border-left: 3px solid var(--color-olive); padding-left: 6px; margin-bottom: 8px; }
+        .card-header-flex h2 { border-left: none; padding-left: 0; margin-bottom: 0; }
 
-        .card { 
-            background: var(--bg-card); border-radius: 16px; padding: 10px;
-            margin-bottom: 12px; box-shadow: var(--shadow-md); transition: all 0.3s;
-        }
-        .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .card-header-flex h2 { margin-bottom: 0; }
-
-        .form-group { margin-bottom: 12px; width: 100%; }
-        .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
+        .form-group { margin-bottom: 8px; width: 100%; display: flex; flex-direction: column; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px; font-weight: 600; }
         
-        input, select, textarea { 
-            width: 100%; padding: 12px; border-radius: 12px; 
-            border: 2px solid var(--border-color); background: var(--input-bg); 
-            color: var(--text-main); font-size: 0.95rem; outline: none;
-            box-shadow: var(--shadow-inner); transition: all 0.2s;
-        }
-        input:focus, textarea:focus { border-color: var(--color-primary); background: var(--bg-card); }
-        input[type="datetime-local"] { -webkit-appearance: none; appearance: none; }
-        
-        input[type="checkbox"] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 18px !important;
-            height: 18px !important;
-            border: 2px solid var(--border-color);
-            border-radius: 6px;
-            background-color: var(--input-bg);
-            cursor: pointer;
-            position: relative;
-            flex-shrink: 0;
-            display: inline-block;
-            transition: all 0.2s;
-            margin: 0;
-        }
-        input[type="checkbox"]:checked {
-            background-color: var(--color-primary);
-            border-color: var(--color-primary);
-        }
-        input[type="checkbox"]:checked::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 6px;
-            width: 6px;
-            height: 12px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-        
-        .btn { 
-            width: 100%; padding: 12px; border-radius: 12px; border: none; 
-            font-size: 0.95rem; font-weight: 700; cursor: pointer; 
-            display: flex; justify-content: center; align-items: center; gap: 6px; 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn:active { transform: scale(0.96) translateY(2px); }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        
-        .btn-primary { background: var(--color-primary); color: #fff; box-shadow: 0 4px 10px rgba(140, 163, 114, 0.2); }
-        .btn-primary:hover { background: var(--color-primary-dark); }
-        .btn-accent { background: var(--color-accent); color: white; }
-        .btn-outline { background: var(--input-bg); border: 2px solid var(--border-color); color: var(--text-main); }
-        .btn-outline:hover { border-color: var(--color-primary); color: var(--color-primary-dark); }
-        [data-theme="dark"] .btn-outline:hover { color: var(--color-primary); }
-        
-        .btn-small { width: auto; padding: 10px 16px; font-size: 0.9rem; border-radius: 10px; flex-shrink: 0; box-shadow: none; }
-
-        .flex-row { display: flex; gap: 8px; width: 100%; }
-        
-        .list-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; min-height: 24px; }
-        .tag-item { 
-            background: var(--bg-card); color: var(--text-main);
-            padding: 6px 12px; border-radius: 16px; display: flex; align-items: center; gap: 6px; 
-            font-size: 0.9rem; font-weight: 600; border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-sm);
-        }
-        .tag-item i { color: var(--text-muted); cursor: pointer; padding: 2px; transition: color 0.2s; }
-        .tag-item i:hover { color: var(--color-accent); transform: scale(1.1); }
-
-        .select-item-label { 
-            display: flex; align-items: center; gap: 12px; 
-            padding: 12px 16px; background: var(--input-bg); border-radius: 12px; 
-            margin-bottom: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;
-        }
-        .select-item-label:hover { border-color: var(--color-primary); }
-        .select-item-label span { font-size: 0.95rem; font-weight: 600; }
-
-        .agenda-write-card { 
-            border: 2px solid var(--border-color); border-radius: 12px; padding: 12px; 
-            margin-bottom: 12px; background: var(--bg-card); 
-        }
-        .agenda-write-card h3 { 
-            font-size: 0.95rem; color: var(--text-main); margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px;
-            background: var(--input-bg); padding: 6px 12px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 800;
-        }
-        .agenda-write-card h3 i { color: var(--color-primary-dark); }
-        
-        .line-input-group { 
-            display: flex; align-items: flex-start; gap: 4px; margin-bottom: 8px; background: var(--input-bg); 
-            padding: 4px; border-radius: 12px; transition: all 0.2s ease; position: relative; border: 2px solid transparent;
-        }
-        
-        .line-input-group.indent { 
-            margin-left: 14px; background: var(--input-bg); border-left: 3px solid var(--color-primary);
-            border-radius: 4px 12px 12px 4px; padding-left: 8px;
-        }
-        
-        .line-input-group textarea { 
-            flex: 1; min-height: 20px; height: auto; padding: 10px 8px; line-height: 1.4; font-size: 0.95rem; 
-            background: transparent; border: none; box-shadow: none; resize: none; color: var(--text-main);
-        }
-
-        /* 주요 내용 (상위 항목) 볼드 스타일 강조 */
-        .line-input-group:not(.indent) textarea {
-            font-weight: 800 !important;
-            color: var(--text-main) !important;
-        }
-        
-        .line-input-group.indent textarea {
-            font-weight: 400 !important;
-            color: var(--text-muted) !important;
-        }
-
-        .btn-tree-toggle { background: none; border: none; color: var(--text-muted); padding: 10px 4px; cursor: pointer; font-size: 1rem; width: 24px; transition: color 0.2s;}
-        .btn-tree-toggle:hover { color: var(--color-primary); }
-        
-        .line-controls-right { display: flex; align-items: center; padding: 0 4px; }
-        .btn-del-line { background: none; border: none; color: var(--text-muted); padding: 8px; cursor: pointer; font-size: 1.1rem; transition: color 0.2s; }
-        .btn-del-line:hover { color: var(--color-accent); }
-        
-        .btn-insert-below { 
-            text-align: center; color: var(--color-primary); cursor: pointer; margin: -8px 0 2px 0; z-index: 10; position: relative; 
-            font-size: 1rem; transition: transform 0.1s, opacity 0.2s; opacity: 0; 
-        }
-        .agenda-write-card:hover .btn-insert-below { opacity: 1; }
-        .btn-insert-below:active { transform: scale(1.2); }
-        .btn-insert-below i { background: var(--bg-card); padding: 2px 10px; border-radius: 8px; border: 2px solid var(--border-color); color: var(--text-muted); }
-        .btn-insert-below i:hover { color: var(--color-primary); border-color: var(--color-primary); }
-
-        .all-select-wrap { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; color: var(--text-muted); }
-
-        .capture-wrapper { background: var(--bg-card); padding: 8px; border-radius: 16px; margin-bottom: 16px; }
-        .result-view { 
+        input[type="text"], input[type="datetime-local"], select { 
+            width: 100%; 
+            padding: 10px 12px; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-color); 
             background: var(--input-bg); 
-            padding: 20px; border-radius: 16px; border: 2px solid var(--border-color); 
-            line-height: 1.6; font-size: 0.95rem; color: var(--text-main); 
+            color: var(--text-primary); 
+            font-size: 0.9rem; 
+            outline: none;
+            -webkit-appearance: none;
         }
-
-        /* 최종 서식 렌더링 스타일 */
-        .report-header { border-bottom: 2px dashed var(--bg-color); padding-bottom: 12px; margin-bottom: 16px; }
-        .report-title { font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
-        .report-meta { font-size: 0.88rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 2px; }
         
-        .report-agenda-block { margin-bottom: 5px;
-                             }
-        .report-agenda-title { 
-            font-weight: 800; font-size: 1rem; color: var(--color-primary-dark); 
-            display: flex; align-items: center; gap: 2px; margin-bottom: 6px;
-            background: var(--bg-color); padding: 1px 2px; border-radius: 8px; border: 1px solid var(--bg-color);
-        }
-        .report-main-item { 
-            font-weight: 800; color: var(--text-main); font-size: 0.96rem; 
-            margin-top: 8px; margin-bottom: 4px; display: flex; align-items: flex-start; gap: 6px; 
-        }
-        .report-main-item .bullet { color: var(--color-primary-dark); font-weight: 900; }
-        .report-sub-item { 
-            font-weight: 400; color: var(--text-main); font-size: 0.9rem; 
-            padding-left: 20px; margin-bottom: 4px; display: flex; align-items: flex-start; gap: 6px; 
-            opacity: 0.9;
-        }
-        .report-sub-item .bullet { color: var(--text-muted); }
+        .btn { width: 100%; padding: 10px; border-radius: 8px; border: none; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px; transition: opacity 0.2s; }
+        .btn:active { opacity: 0.7; }
+        .btn-primary { background: var(--color-olive); color: #fff; }
+        [data-theme="yellow"] .btn-primary { color: #160C28; } /* 옐로우 테마 글씨색 예외처리 */
+        .btn-accent { background: var(--color-coral); color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); }
+        .btn-small { width: auto; padding: 6px 10px; font-size: 0.8rem; border-radius: 6px; flex-shrink: 0; }
 
+        .list-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; min-height: 10px; }
+        .tag-item { background: var(--input-bg); padding: 4px 8px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 0.8rem; border: 1px solid var(--border-color); user-select: none; }
+        .tag-item i { color: var(--color-coral); cursor: pointer; font-size: 0.9rem; }
+
+        /* 커스텀 체크박스 (iOS 호환) */
+        .custom-checkbox {
+            appearance: none; -webkit-appearance: none;
+            width: 18px; height: 18px; border: 2px solid var(--color-olive); border-radius: 4px;
+            display: inline-block; position: relative; cursor: pointer; flex-shrink: 0; background: var(--bg-card);
+        }
+        .custom-checkbox:checked { background-color: var(--color-olive); }
+        .custom-checkbox:checked::after {
+            content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px;
+            border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg);
+        }
+        [data-theme="yellow"] .custom-checkbox:checked::after { border-color: #160C28; }
+
+        .select-item-label { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--input-bg); border-radius: 8px; margin-bottom: 6px; cursor: pointer; width: 100%; border: 1px solid transparent; }
+        .select-item-label span { font-size: 0.9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .agenda-write-card { border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; margin-bottom: 10px; background: var(--bg-primary); }
+        .agenda-write-card h3 { font-size: 0.9rem; color: var(--color-olive); margin-bottom: 8px; display: flex; align-items: center; gap:4px; }
+        
+        /* 텍스트 라인 컨테이너 */
+        .line-input-group { 
+            display: flex; align-items: flex-start; gap: 2px; margin-bottom: 6px; 
+            width: 100%; position: relative; transition: all 0.2s ease;
+        }
+        
+        /* 텍스트 에어리어 기본 스타일 */
+        .line-input-group textarea { 
+            flex: 1; min-height: 40px; height: auto; padding: 8px; line-height: 1.4; font-size: 0.9rem; 
+            border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); 
+            color: var(--text-primary); resize: none; outline: none;
+        }
+        
+        /* [중요 복구 포인트] 부모 항목일 때 Bold 및 컬러 강조 */
+        .line-input-group.is-parent textarea { 
+            font-weight: 800 !important; 
+            color: var(--color-olive-dark) !important; 
+        }
+        
+        /* 들여쓰기 시 테두리 전체가 - 버튼까지 덮이도록 조정 */
+        .line-input-group.indent { 
+            background: var(--input-bg); 
+            border: 1px solid var(--border-color);
+            border-radius: 4px 10px 10px 4px;
+            padding: 2px 2px 2px 8px; /* 좌측 여백을 최소한으로 주어 너비 확보 */
+            margin-left: 12px;
+            width: calc(100% - 12px); 
+        }
+        /* 들여쓰기 상태일 때 내부 텍스트창은 배경/선 투명화 */
+        .line-input-group.indent textarea { 
+            background: transparent; border: none; padding-left: 4px; box-shadow: none;
+        }
+        
+        .btn-tree-toggle { background: none; border: none; color: var(--color-olive); padding: 8px 4px; cursor: pointer; font-size: 0.9rem; width: 22px; display: flex; justify-content: center; margin-top: 2px;}
+        .btn-del-line { background: none; border: none; color: var(--text-secondary); padding: 8px 6px; cursor: pointer; display: flex; justify-content: center; align-items: center; margin-top: 2px;}
+
+        /* 행 추가 중간 화살표 */
+        .btn-insert-below { text-align: center; color: var(--color-coral); cursor: pointer; margin: -4px 0 2px 0; z-index: 10; position: relative; font-size: 1.2rem; line-height: 1; transition: transform 0.1s; padding: 4px 0; }
+        .btn-insert-below:active { transform: scale(1.1); }
+        .btn-insert-below i { background: var(--bg-card); padding: 0 10px; border-radius: 4px; }
+
+        .all-select-wrap { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); }
+
+        .capture-wrapper { background: var(--bg-card); padding: 4px; border-radius: 8px; }
+        .result-view { white-space: pre-wrap; background: var(--input-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); line-height: 1.5; font-size: 0.85rem; color: var(--text-primary); }
+        
         .forced-light {
-            --bg-card: #FFFFFF !important; --input-bg: #F2F8ED !important;
-            --text-main: #2A3622 !important; --border-color: #E2EBDD !important;
-            --color-primary-dark: #6BB521 !important;
-            --color-primary: #9BCE26 !important;
+            --bg-card: #ffffff !important;
+            --input-bg: #f4f4f0 !important;
+            --text-primary: #222222 !important;
+            --border-color: #e5e5e0 !important;
         }
-        .forced-light .result-view {
-            color: #2A3622 !important; background: #F2F8ED !important; border-color: #E2EBDD !important;
-        }
+        .forced-light .result-view { color: #222222 !important; background: #f4f4f0 !important; border-color: #e5e5e0 !important; }
 
         .hidden { display: none !important; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .mt-12 { margin-top: 12px; }
-        .mt-20 { margin-top: 16px; }
-        .text-danger { color: var(--color-accent); border-color: rgba(224, 122, 95, 0.3); }
-        .text-danger:hover { background: rgba(224, 122, 95, 0.1); border-color: var(--color-accent); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .mt-10 { margin-top: 8px; }
+        .mt-12 { margin-top: 10px; }
 
-        .toast-container {
-            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            display: flex; flex-direction: column; gap: 8px; z-index: 9999; pointer-events: none; width: 90%; max-width: 400px;
-        }
-        .toast {
-            background: #2C3625; color: white; padding: 12px 20px;
-            border-radius: 20px; font-size: 0.9rem; font-weight: 600; text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15); backdrop-filter: blur(8px);
-            opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .toast.show { opacity: 1; transform: translateY(0); }
-        [data-theme="dark"] .toast { background: #EAE8E0; color: #232720; }
-
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(35, 39, 32, 0.6);
-            display: flex; justify-content: center; align-items: center; z-index: 10000;
-            opacity: 0; pointer-events: none; transition: opacity 0.2s; backdrop-filter: blur(4px);
-        }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-card {
-            background: var(--bg-card); padding: 28px 20px; border-radius: 24px; width: 90%; max-width: 360px;
-            box-shadow: var(--shadow-md); transform: scale(0.9); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
-        }
-        .modal-overlay.active .modal-card { transform: scale(1); }
-        .modal-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
-        .modal-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
-        .modal-actions { display: flex; gap: 8px; }
-
-        .theme-color-preview { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
-        .theme-list-btn { margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 2px solid transparent; background: var(--input-bg); color: var(--text-main); font-weight: 600; padding: 12px 16px;}
-        .theme-list-btn:hover { border-color: var(--color-primary); }
+        /* 테마 선택 모달 스타일 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
+        .theme-btn { justify-content: flex-start; margin-bottom: 6px; padding: 12px; font-size: 0.95rem; }
     </style>
 </head>
 <body>
-    <!-- Chosen Palette: Olive Green & Warm Neutrals -->
-    <!-- Application Structure Plan: Multi-step interactive form architecture (Setup -> Agenda Selection -> Hierarchical Note Taking -> Result & Platform-Specific PC/Mobile File Export) designed for rapid meeting record generation and tailored mobile/desktop saving. -->
-    <!-- Visualization & Content Choices: Interactive Dynamic Forms, Step-indicator Navigation, Tree-structured Indent Textarea Blocks, Rich HTML Result View with Bold/Color emphasis, Html2Canvas Export with PC direct download & Mobile native share sheet -> Designed for optimized user experience without SVG graphics or Mermaid JS. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <header>
-        <h1><b><i>OLIVE</b> <span>Meeting Room</span></i></h1>
+        <h1>OLIVE <span>Meeting Room</span></h1>
         <button class="btn-outline btn-small" onclick="openThemeModal()"><i class="fa-solid fa-palette"></i> 테마</button>
     </header>
 
     <div class="step-indicator">
-        <div class="step-node active" id="step-node-1">1</div>
-        <div class="step-line" id="step-line-1"></div>
-        <div class="step-node" id="step-node-2">2</div>
-        <div class="step-line" id="step-line-2"></div>
-        <div class="step-node" id="step-node-3">3</div>
-        <div class="step-line" id="step-line-3"></div>
-        <div class="step-node" id="step-node-4"><i class="fa-solid fa-check"></i></div>
+        <div class="step-bar active" id="bar-1"></div>
+        <div class="step-bar" id="bar-2"></div>
+        <div class="step-bar" id="bar-3"></div>
+        <div class="step-bar" id="bar-4"></div>
     </div>
 
+    <!-- 1단계: 기본 설정 -->
     <div id="step-setup">
         <div class="card">
             <h2>기본 정보</h2>
             <div class="form-group">
                 <label>회의 제목</label>
-                <input type="text" id="meet-title" placeholder="예: 주간 회의">
+                <input type="text" id="meet-title" placeholder="예: 주간 매장 점검 회의">
             </div>
             <div class="form-group">
                 <label>회의 일시</label>
@@ -394,123 +242,95 @@
 
         <div class="card">
             <h2>참석자 등록</h2>
-            <div class="flex-row">
+            <div style="display:flex; gap:6px; width:100%;">
                 <input type="text" id="member-input" placeholder="이름 입력 후 엔터" onkeydown="if(event.keyCode==13) addMember()">
-                <button class="btn btn-primary btn-small" onclick="addMember()">추가</button>
+                <button class="btn btn-primary btn-small" onclick="addMember()">등록</button>
             </div>
             <div id="member-list" class="list-container"></div>
         </div>
 
         <div class="card">
             <h2>회의 안건 관리</h2>
-            <div class="flex-row">
+            <div style="display:flex; gap:6px; width:100%;">
                 <input type="text" id="agenda-input" placeholder="안건 입력 후 엔터" onkeydown="if(event.keyCode==13) addAgenda()">
-                <button class="btn btn-primary btn-small" onclick="addAgenda()">추가</button>
+                <button class="btn btn-primary btn-small" onclick="addAgenda()">등록</button>
             </div>
             <div id="agenda-list" class="list-container"></div>
         </div>
 
-        <button class="btn btn-primary" onclick="switchStep(2)">다음 단계 (안건 선택) ➔</button>
+        <button class="btn btn-primary mt-10" onclick="switchStep(2)">회의 안건 선택 ➔</button>
         
-        <div class="mt-20" style="text-align: center;">
-            <button class="btn btn-outline text-danger" style="font-size:0.9rem; padding:12px; width: auto; margin: 0 auto; border:none; background:transparent; box-shadow:none;" onclick="requestClearCache()">
-                <i class="fa-solid fa-rotate-right"></i> 앱 데이터 초기화
+        <div class="mt-12" style="text-align: center;">
+            <button class="btn btn-outline" style="color: var(--color-coral); border-color: rgba(255,120,120,0.3); font-size:0.8rem; padding:8px;" onclick="clearAllCache()">
+                <i class="fa-solid fa-trash-can"></i> 전체 캐시 초기화
             </button>
         </div>
     </div>
 
+    <!-- 2단계: 안건 선택 -->
     <div id="step-select" class="hidden">
         <div class="card">
             <div class="card-header-flex">
-                <h2>오늘 다룰 안건</h2>
+                <h2>안건 선택</h2>
                 <label class="all-select-wrap">
-                    <input type="checkbox" id="all-agenda-select" onchange="toggleAllAgendas(this.checked)">
+                    <input type="checkbox" class="custom-checkbox" id="all-agenda-select" onchange="toggleAllAgendas(this.checked)">
                     <span>전체 선택</span>
                 </label>
             </div>
             <div id="select-zone"></div>
-            <div class="grid-2 mt-20">
+            <div class="grid-2 mt-10">
                 <button class="btn btn-outline" onclick="switchStep(1)">이전</button>
-                <button class="btn btn-primary" onclick="initWriteStep()">회의 시작 ➔</button>
+                <button class="btn btn-accent" onclick="initWriteStep()">회의 시작 ➔</button>
             </div>
         </div>
     </div>
 
+    <!-- 3단계: 회의 기록 작성 -->
     <div id="step-write" class="hidden">
-        <div class="card">
-            <h2>진행 기록</h2>
+        <div class="card" style="padding: 10px 8px;">
+            <h2 style="margin-left: 4px;">회의 진행 기록</h2>
             <div id="write-zone"></div>
-            <div class="grid-2 mt-20">
+            <div class="grid-2 mt-10">
                 <button class="btn btn-outline" onclick="switchStep(2)">안건 변경</button>
-                <button class="btn btn-primary" onclick="renderResult()">작성 완료 <i class="fa-solid fa-check"></i></button>
+                <button class="btn btn-primary" onclick="renderResult()">회의 종료 ➔</button>
             </div>
         </div>
     </div>
 
+    <!-- 4단계: 결과 확인 -->
     <div id="step-result" class="hidden">
         <div class="card">
             <h2>최종 회의록</h2>
-            
             <div class="capture-wrapper" id="capture-area">
                 <div class="result-view" id="result-text"></div>
             </div>
+            
+            <div class="mt-12">
+                <button class="btn btn-accent" onclick="shareToSlack()" style="padding: 12px; font-size: 1rem;"><i class="fa-brands fa-slack"></i> 외부 공유하기</button>
+            </div>
 
-            <div class="grid-2" style="gap: 8px;">
-                <button class="btn btn-primary" onclick="shareNative()" style="padding: 14px 8px; font-size: 0.95rem;">
-                    <i class="fa-brands fa-slack"></i> 회의록 공유
-                </button>
-                <button class="btn btn-outline" onclick="copyText()" style="padding: 14px 8px; font-size: 0.95rem;">
-                    <i class="fa-regular fa-copy"></i> 텍스트 복사
-                </button>
-                <button class="btn btn-outline" onclick="saveAsImage()" style="padding: 14px 8px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-image"></i> 사진으로 저장
-                </button>
-                <button class="btn btn-outline" onclick="downloadAsTextFile()" style="padding: 14px 8px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-file-lines"></i> TXT 파일 저장
-                </button>
+            <div class="grid-2 mt-10">
+                <button class="btn btn-outline" onclick="copyText()"><i class="fa-regular fa-copy"></i> 텍스트 복사</button>
+                <button class="btn btn-primary" onclick="downloadAsPNG()"><i class="fa-solid fa-file-image"></i> 이미지 저장</button>
             </div>
             
-            <div class="grid-2 mt-20" style="border-top: 2px dashed var(--border-color); padding-top: 20px;">
-                <button class="btn btn-outline" onclick="switchStep(3)"><i class="fa-solid fa-chevron-left"></i> 내용 수정</button>
-                <button class="btn btn-outline text-danger" onclick="location.reload()">새 회의 시작</button>
+            <div class="grid-2 mt-12" style="border-top: 1px dashed var(--border-color); padding-top: 12px;">
+                <button class="btn btn-outline" onclick="switchStep(3)"><i class="fa-solid fa-chevron-left"></i> 이전</button>
+                <button class="btn btn-outline" style="color:var(--color-coral); border-color: rgba(255,120,120,0.3);" onclick="location.reload()">새 회의 시작</button>
             </div>
         </div>
     </div>
 
-    <div class="toast-container" id="toast-container"></div>
-
-    <div class="modal-overlay" id="custom-confirm-modal">
-        <div class="modal-card">
-            <div class="modal-title" id="modal-title">알림</div>
-            <div class="modal-desc" id="modal-desc">내용</div>
-            <div class="modal-actions">
-                <button class="btn btn-outline" id="modal-btn-cancel">취소</button>
-                <button class="btn btn-primary text-danger" id="modal-btn-confirm" style="background:var(--color-accent); color:white; border:none;">확인</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="image-modal">
-        <div class="modal-card" style="max-width: 90vw; max-height: 85vh; overflow-y: auto;">
-            <div class="modal-title">사진첩 저장 안내</div>
-            <div class="modal-desc" style="margin-bottom: 12px; font-size: 0.88rem;">아래 이미지를 <b>길게 누른 뒤</b><br>[사진 앱에 추가]를 눌러 저장하세요.</div>
-            <img id="modal-img-preview" src="" style="width: 100%; height: auto; border-radius: 12px; border: 2px solid var(--border-color); margin-bottom: 16px;">
-            <button class="btn btn-primary" onclick="closeImageModal()">닫기</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="theme-modal">
-        <div class="modal-card">
-            <div class="modal-title">테마 설정</div>
-            <div class="modal-desc" style="margin-bottom: 16px;">원하는 컬러 테마를 선택하세요.</div>
-            <div class="theme-list" style="display:flex; flex-direction:column;">
-                <button class="btn btn-small theme-list-btn" onclick="setTheme('light')"><span>🌿 올리브영 (기본)</span> <div class="theme-color-preview" style="background:#9BCE26;"></div></button>
-                <button class="btn btn-small theme-list-btn" onclick="setTheme('dark')"><span>🌙 다크 (그레이)</span> <div class="theme-color-preview" style="background:#333333;"></div></button>
-                <button class="btn btn-small theme-list-btn" onclick="setTheme('blue')"><span>🌊 파랑 & 다크</span> <div class="theme-color-preview" style="background:#2043BF;"></div></button>
-                <button class="btn btn-small theme-list-btn" onclick="setTheme('yellow')"><span>🌕 옐로우 & 다크</span> <div class="theme-color-preview" style="background:#EDC65B;"></div></button>
-                <button class="btn btn-small theme-list-btn" style="margin-bottom:20px;" onclick="setTheme('purple')"><span>🍇 연보라 & 핑크</span> <div class="theme-color-preview" style="background:#AD8CEB;"></div></button>
-            </div>
-            <button class="btn btn-primary" onclick="closeThemeModal()">닫기</button>
+    <!-- 테마 선택 모달 -->
+    <div id="theme-modal" class="modal-overlay hidden">
+        <div class="card" style="width: 85%; max-width: 320px; padding: 20px;">
+            <h2 style="margin-bottom: 16px; font-size:1.1rem;"><i class="fa-solid fa-palette"></i> 테마 선택</h2>
+            <button class="btn btn-outline theme-btn" onclick="setTheme('default')">🟢 올리브영 (기본)</button>
+            <button class="btn btn-outline theme-btn" onclick="setTheme('dark')">⚫ 다크 모드 (그레이)</button>
+            <button class="btn btn-outline theme-btn" onclick="setTheme('purple')">🟣 퍼플 & 핑크</button>
+            <button class="btn btn-outline theme-btn" onclick="setTheme('blue')">🔵 블루 & 그레이</button>
+            <button class="btn btn-outline theme-btn" onclick="setTheme('yellow')">🟡 옐로우 & 다크</button>
+            <button class="btn btn-primary mt-10" onclick="closeThemeModal()">닫기</button>
         </div>
     </div>
 
@@ -518,38 +338,27 @@
         let state = {
             title: "", date: "", 
             members: [], 
-            agendas: ["전사전략", "공유사항"],
+            agendas: ["전사전략공유", "공유사항"],
             selected: [],
             contents: {}
         };
 
-        function isMobileDevice() {
-            return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-                || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0 && /Macintosh|MacIntel/i.test(navigator.userAgent));
-        }
-
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-            );
-        }
-
         window.onload = () => {
-            const savedTheme = localStorage.getItem('olive_pwa_theme');
-            if(savedTheme && savedTheme !== 'light') {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-            }
+            // 저장된 테마 불러오기
+            const savedTheme = localStorage.getItem('olive_theme') || 'default';
+            document.documentElement.setAttribute('data-theme', savedTheme);
 
-            const saved = localStorage.getItem('olive_pwa_data_v5_clay');
+            // 데이터 불러오기
+            const saved = localStorage.getItem('olive_pwa_data_v4_tree');
             if(saved) state = JSON.parse(saved);
             renderSetup();
             
+            // 날짜 기본값 세팅
             if(!state.date) {
                 const now = new Date();
                 now.setHours(now.getHours() + 1);
                 now.setMinutes(0);
                 now.setSeconds(0);
-                
                 const offset = now.getTimezoneOffset() * 60000;
                 const localISOTime = new Date(now.getTime() - offset).toISOString().slice(0, 16);
                 document.getElementById('meet-date').value = localISOTime;
@@ -557,6 +366,7 @@
                 document.getElementById('meet-date').value = state.date;
             }
             
+            // 텍스트에어리어 자동 높이 조절
             document.addEventListener('input', function (e) {
                 if (e.target.tagName.toLowerCase() === 'textarea' && e.target.closest('.line-input-group')) {
                     e.target.style.height = 'auto';
@@ -565,64 +375,30 @@
             });
         };
 
-        function showToast(message) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerText = message;
-            container.appendChild(toast);
-            
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 2500);
+        // --- 테마 관련 기능 ---
+        function openThemeModal() { document.getElementById('theme-modal').classList.remove('hidden'); }
+        function closeThemeModal() { document.getElementById('theme-modal').classList.add('hidden'); }
+        function setTheme(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('olive_theme', themeName);
+            closeThemeModal();
         }
 
-        let confirmCallback = null;
-        function showConfirm(title, desc, callback) {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-desc').innerText = desc;
-            document.getElementById('custom-confirm-modal').classList.add('active');
-            confirmCallback = callback;
-        }
-
-        document.getElementById('modal-btn-cancel').onclick = () => {
-            document.getElementById('custom-confirm-modal').classList.remove('active');
-            confirmCallback = null;
-        };
-
-        document.getElementById('modal-btn-confirm').onclick = () => {
-            document.getElementById('custom-confirm-modal').classList.remove('active');
-            if (confirmCallback) confirmCallback();
-        };
-
-        function openImageModal(imgDataUrl) {
-            document.getElementById('modal-img-preview').src = imgDataUrl;
-            document.getElementById('image-modal').classList.add('active');
-        }
-
-        function closeImageModal() {
-            document.getElementById('image-modal').classList.remove('active');
-        }
-
+        // --- 상태 저장 및 초기화 ---
         function save() { 
             state.title = document.getElementById('meet-title').value;
             state.date = document.getElementById('meet-date').value;
-            localStorage.setItem('olive_pwa_data_v5_clay', JSON.stringify(state)); 
+            localStorage.setItem('olive_pwa_data_v4_tree', JSON.stringify(state)); 
         }
 
-        function requestClearCache() {
-            showConfirm(
-                "데이터 초기화", 
-                "작성 중인 모든 회의 내용과 기록이 삭제됩니다. 계속하시겠습니까?", 
-                () => {
-                    localStorage.removeItem('olive_pwa_data_v5_clay');
-                    location.reload();
-                }
-            );
+        function clearAllCache() {
+            if(confirm("모든 캐시 데이터가 초기화됩니다. 진행할까요?")) {
+                localStorage.removeItem('olive_pwa_data_v4_tree');
+                location.reload();
+            }
         }
 
+        // --- 멤버 및 안건 관리 ---
         function addMember() {
             const val = document.getElementById('member-input').value.trim();
             if(val) { state.members.push(val); document.getElementById('member-input').value = ""; renderSetup(); save(); }
@@ -636,46 +412,41 @@
         function delAgenda(idx) { state.agendas.splice(idx, 1); renderSetup(); save(); }
 
         function renderSetup() {
-            const mList = document.getElementById('member-list');
-            mList.innerHTML = state.members.map((m, i) => `
-                <div class="tag-item">
-                    ${escapeHTML(m)} <i class="fa-solid fa-xmark" onclick="delMember(${i})"></i>
-                </div>
+            document.getElementById('member-list').innerHTML = state.members.map((m, i) => `
+                <div class="tag-item">${m} <i class="fa-solid fa-xmark" onclick="delMember(${i})"></i></div>
             `).join('');
             
-            const aList = document.getElementById('agenda-list');
-            aList.innerHTML = state.agendas.map((a, i) => `
-                <div class="tag-item">
-                    ${escapeHTML(a)} <i class="fa-solid fa-xmark" onclick="delAgenda(${i})"></i>
-                </div>
+            document.getElementById('agenda-list').innerHTML = state.agendas.map((a, i) => `
+                <div class="tag-item">${a} <i class="fa-solid fa-xmark" onclick="delAgenda(${i})"></i></div>
             `).join('');
             
             document.getElementById('meet-title').value = state.title || "";
         }
 
+        // --- 단계 이동 ---
         function switchStep(n) {
             document.querySelectorAll('body > div[id^="step-"]').forEach(div => div.classList.add('hidden'));
             const ids = ['step-setup', 'step-select', 'step-write', 'step-result'];
             document.getElementById(ids[n-1]).classList.remove('hidden');
             
             for(let i=1; i<=4; i++) {
-                const node = document.getElementById(`step-node-${i}`);
-                const line = document.getElementById(`step-line-${i}`);
-                if(i <= n) { if(node) node.classList.add('active'); if(line) line.classList.add('active'); } 
-                else { if(node) node.classList.remove('active'); if(line) line.classList.remove('active'); }
+                const bar = document.getElementById(`bar-${i}`);
+                if(i <= n) bar.classList.add('active');
+                else bar.classList.remove('active');
             }
             
             if(n === 2) renderSelect();
             save();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo(0,0);
         }
 
+        // --- 안건 선택 단계 ---
         function renderSelect() {
             const zone = document.getElementById('select-zone');
             zone.innerHTML = state.agendas.map(a => `
                 <label class="select-item-label">
-                    <input type="checkbox" value="${escapeHTML(a)}" ${state.selected.includes(a)?'checked':''} onchange="updateSingleSelect()">
-                    <span>${escapeHTML(a)}</span>
+                    <input type="checkbox" class="custom-checkbox" value="${a}" ${state.selected.includes(a)?'checked':''} onchange="updateSingleSelect()">
+                    <span>${a}</span>
                 </label>
             `).join('');
             
@@ -687,23 +458,22 @@
         function toggleAllAgendas(isChecked) {
             const boxes = document.querySelectorAll('#select-zone input[type="checkbox"]');
             boxes.forEach(box => box.checked = isChecked);
-            if(isChecked) state.selected = [...state.agendas];
-            else state.selected = [];
+            state.selected = isChecked ? [...state.agendas] : [];
             save();
         }
 
         function updateSingleSelect() {
             const checked = document.querySelectorAll('#select-zone input:checked');
             state.selected = Array.from(checked).map(c => c.value);
-            const allChecked = state.selected.length === state.agendas.length;
-            document.getElementById('all-agenda-select').checked = allChecked;
+            document.getElementById('all-agenda-select').checked = (state.selected.length === state.agendas.length);
             save();
         }
 
+        // --- 회의 작성 단계 ---
         function initWriteStep() {
             const checked = document.querySelectorAll('#select-zone input:checked');
             state.selected = Array.from(checked).map(c => c.value);
-            if(state.selected.length === 0) return showToast("진행할 안건을 최소 하나 선택해주세요.");
+            if(state.selected.length === 0) return alert("진행할 안건을 최소 하나 선택해주세요.");
             
             state.selected.forEach(a => { 
                 if(!state.contents[a] || state.contents[a].length === 0) {
@@ -720,38 +490,44 @@
                 const arr = state.contents[a];
                 return `
                     <div class="agenda-write-card">
-                        <h3>📌 ${escapeHTML(a)}</h3>
-                        <div id="lines-${escapeHTML(a)}">
+                        <h3><i class="fa-solid fa-thumbtack"></i> ${a}</h3>
+                        <div id="lines-${a}">
                             ${arr.map((item, i) => {
+                                // 다음 인덱스(i+1)가 존재하고 그 항목이 indent 상태이며, 현재(i) 항목은 indent가 아닐 경우 isParent = true
+                                const isParent = (i < arr.length - 1 && arr[i+1].indent && !item.indent);
                                 return `
-                                    <div class="line-input-group ${item.indent ? 'indent' : ''}">
-                                        <button class="btn-tree-toggle" onclick="toggleTreeIndent('${escapeHTML(a)}', ${i})" title="${item.indent ? '주요 내용으로 변경' : '세부 내용으로 변경'}">
-                                            <i class="fa-solid ${item.indent ? 'fa-angle-right' : 'fa-list-ul'}"></i>
+                                    <div class="line-input-group ${item.indent ? 'indent' : ''} ${isParent ? 'is-parent' : ''}">
+                                        <button class="btn-tree-toggle" onclick="toggleTreeIndent('${a}', ${i})">
+                                            <i class="fa-solid ${item.indent ? 'fa-chevron-left' : 'fa-chevron-right'}"></i>
                                         </button>
-                                        <textarea placeholder="${item.indent ? '세부 내용을 입력하세요' : '주요 내용을 입력하세요 (굵게 표시)'}" oninput="updateLine('${escapeHTML(a)}', ${i}, this.value)">${escapeHTML(item.text)}</textarea>
-                                        <div class="line-controls-right">
-                                            <button class="btn-del-line" onclick="delLine('${escapeHTML(a)}', ${i})" title="항목 삭제"><i class="fa-solid fa-minus"></i></button>
-                                        </div>
+                                        <textarea placeholder="${item.indent ? '상세 내용을 입력' : '주요 아젠다를 입력'}" oninput="updateLine('${a}', ${i}, this.value)">${item.text}</textarea>
+                                        <button class="btn-del-line" onclick="delLine('${a}', ${i})"><i class="fa-solid fa-minus"></i></button>
                                     </div>
-                                    ${i < arr.length - 1 ? `<div class="btn-insert-below" onclick="insertLineBelow('${escapeHTML(a)}', ${i})" title="중간에 행 추가"><i class="fa-solid fa-chevron-down"></i></div>` : ''}
+                                    ${i < arr.length - 1 ? `<div class="btn-insert-below" onclick="insertLineBelow('${a}', ${i})"><i class="fa-solid fa-caret-down"></i></div>` : ''}
                                 `;
                             }).join('')}
                         </div>
-                        <button class="btn btn-outline btn-small" onclick="addLine('${escapeHTML(a)}')" style="width:100%; margin-top:8px; border-style: dashed;"><i class="fa-solid fa-plus"></i> 맨 아래 내용 추가</button>
+                        <button class="btn btn-outline btn-small" onclick="addLine('${a}')" style="width:100%; margin-top:6px;">+ 내용 추가</button>
                     </div>
                 `;
             }).join('');
         }
 
-        function insertLineBelow(a, i) { state.contents[a].splice(i + 1, 0, { text: "", indent: false }); renderWriteZone(); save(); }
-        function toggleTreeIndent(a, i) { state.contents[a][i].indent = !state.contents[a][i].indent; renderWriteZone(); save(); }
+        function toggleTreeIndent(a, i) {
+            state.contents[a][i].indent = !state.contents[a][i].indent;
+            renderWriteZone(); save();
+        }
+        function insertLineBelow(a, i) {
+            state.contents[a].splice(i + 1, 0, { text: "", indent: false });
+            renderWriteZone(); save();
+        }
         function addLine(a) { state.contents[a].push({ text: "", indent: false }); renderWriteZone(); save(); }
         function delLine(a, i) { if(state.contents[a].length > 1) { state.contents[a].splice(i, 1); renderWriteZone(); save(); } }
         function updateLine(a, i, val) { state.contents[a][i].text = val; save(); }
 
-        // 텍스트/클립보드 복사용 (마크다운 볼드 적용)
+        // --- 결과 및 내보내기 ---
         function getRawReport() {
-            let res = `📝 [회의록] ${state.title || '주간 회의'}\n`;
+            let res = `📝 [회의록] ${state.title || '미팅데이터'}\n`;
             res += `일시: ${document.getElementById('meet-date').value.replace('T',' ')}\n`;
             res += `참석자: ${state.members.length > 0 ? state.members.join(', ') : '-'}\n`;
             res += `--------------------------\n`;
@@ -761,11 +537,10 @@
                     state.contents[a].forEach(item => { 
                         if(item.text.trim()) {
                             if(item.indent) {
-                                const subLines = item.text.split('\n').map((subLine, idx) => idx === 0 ? `    ◦ ${subLine}` : `      ${subLine}`).join('\n');
+                                const subLines = item.text.split('\n').map((subLine, idx) => idx === 0 ? `   ◦ ${subLine}` : `     ${subLine}`).join('\n');
                                 res += `${subLines}\n`;
                             } else {
-                                // 주요 내용은 마크다운 볼드(**) 적용
-                                const formattedLine = item.text.split('\n').map((subLine, idx) => idx === 0 ? ` ▪ **${subLine}**` : `   **${subLine}**`).join('\n');
+                                const formattedLine = item.text.split('\n').map((subLine, idx) => idx === 0 ? ` - ${subLine}` : `   ${subLine}`).join('\n');
                                 res += `${formattedLine}\n`; 
                             }
                         }
@@ -775,71 +550,25 @@
             return res;
         }
 
-        // 화면 출력 및 사진 이미지 저장용 서식화 HTML 생성 함수
-        function getFormattedHTMLReport() {
-            const dateVal = document.getElementById('meet-date').value.replace('T',' ');
-            let html = `
-                <div class="report-header">
-                    <div class="report-title">📝 ${escapeHTML(state.title || '주간 회의')}</div>
-                    <div class="report-meta">
-                        <div><b>일시:</b> ${escapeHTML(dateVal)}</div>
-                        <div><b>참석자:</b> ${state.members.length > 0 ? escapeHTML(state.members.join(', ')) : '-'}</div>
-                    </div>
-                </div>
-            `;
-
-            state.selected.forEach(a => {
-                html += `
-                    <div class="report-agenda-block">
-                        <div class="report-agenda-title">📌 ${escapeHTML(a)}</div>
-                `;
-
-                if(state.contents[a]) {
-                    state.contents[a].forEach(item => {
-                        if(item.text.trim()) {
-                            const lines = escapeHTML(item.text).split('\n');
-                            if(item.indent) {
-                                lines.forEach((line, idx) => {
-                                    html += `
-                                        <div class="report-sub-item">
-                                            <span class="bullet">${idx === 0 ? '◦' : '&nbsp;'}</span>
-                                            <span>${line}</span>
-                                        </div>
-                                    `;
-                                });
-                            } else {
-                                lines.forEach((line, idx) => {
-                                    html += `
-                                        <div class="report-main-item">
-                                            <span class="bullet">${idx === 0 ? '▪' : '&nbsp;'}</span>
-                                            <span>${line}</span>
-                                        </div>
-                                    `;
-                                });
-                            }
-                        }
-                    });
-                }
-
-                html += `</div>`;
-            });
-
-            return html;
-        }
-
         function renderResult() {
             save();
-            document.getElementById('result-text').innerHTML = getFormattedHTMLReport();
+            document.getElementById('result-text').innerText = getRawReport();
             switchStep(4);
         }
 
-        function copyText() { 
+        // 복사 에러 방지 (try-catch 및 Fallback 우회 방식 적용)
+        function copyText() {
             const textToCopy = getRawReport();
+            
+            // 모던 브라우저 API 시도
             if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(textToCopy)
-                    .then(() => showToast("마크다운 볼드가 적용된 텍스트가 복사되었습니다."))
-                    .catch(err => fallbackCopyTextToClipboard(textToCopy));
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert("클립보드에 복사되었습니다.");
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(textToCopy);
+                });
             } else {
+                // 구형 브라우저 및 비보안 환경(HTTP) Fallback
                 fallbackCopyTextToClipboard(textToCopy);
             }
         }
@@ -847,142 +576,53 @@
         function fallbackCopyTextToClipboard(text) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.top = "0";
+            textArea.style.position = "fixed";  // 화면 스크롤 방지
             textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
-
             try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast("마크다운 볼드가 적용된 텍스트가 복사되었습니다.");
-                } else {
-                    showToast("복사 실패. 결과창 텍스트를 직접 선택해주세요.");
-                }
+                document.execCommand('copy');
+                alert("클립보드에 복사되었습니다.");
             } catch (err) {
-                showToast("브라우저가 복사를 지원하지 않습니다.");
+                alert("복사 실패. 텍스트를 직접 드래그해서 복사해주세요.");
             }
             document.body.removeChild(textArea);
         }
 
-        async function shareNative() {
+        async function shareToSlack() {
             const reportText = getRawReport();
             if (navigator.share) {
-                try { 
-                    await navigator.share({ 
-                        title: state.title || '회의록', 
-                        text: reportText 
-                    }); 
-                } catch (err) { 
-                    if (err.name !== 'AbortError') console.log('공유 실패:', err); 
-                }
+                try { await navigator.share({ title: state.title || '회의록 전송', text: reportText }); } 
+                catch (err) { console.log('공유 취소:', err); }
             } else {
-                copyText();
-                showToast("기기가 시스템 공유를 지원하지 않아 클립보드에 복사했습니다.");
+                copyText(); // 복사 함수 재활용
+                alert("시스템 공유 기능이 지원되지 않아 클립보드에 복사했습니다. 원하는 곳에 붙여넣기 해주세요.");
             }
         }
 
-        function saveAsImage() {
+        function downloadAsPNG() {
             const wrapper = document.getElementById('capture-area');
+            wrapper.classList.add('forced-light'); // 다크모드일때도 흰 배경으로 캡쳐되도록 강제
 
-            const computedStyle = getComputedStyle(document.documentElement);
-            let currentBgColor = computedStyle.getPropertyValue('--bg-body').trim() || '#F7FAF5';
-            
             html2canvas(wrapper, {
-                scale: 2, currentBgColor, useCORS: true
-            }).then(async canvas => {
-              
-                const fileName = `회의록_${state.title || '회의'}.png`;
-
-                canvas.toBlob(async (blob) => {
-                    if (!blob) {
-                        showToast('이미지 생성에 실패했습니다.');
-                        return;
-                    }
-
-                    // 1. PC / Desktop Environment -> Direct Download File
-                    if (!isMobileDevice()) {
-                        const link = document.createElement('a');
-                        link.download = fileName;
-                        link.href = URL.createObjectURL(blob);
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-                        showToast("이미지 파일이 다운로드되었습니다.");
-                        return;
-                    }
-
-                    // 2. Mobile Environment -> Native Share Sheet (Save to Photos / Share)
-                    const file = new File([blob], fileName, { type: 'image/png' });
-
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        try {
-                            await navigator.share({
-                                files: [file],
-                                title: state.title || '회의록 이미지',
-                                text: '회의록 이미지 저장'
-                            });
-                            showToast("공유 시트가 열렸습니다. [이미지 저장]을 선택하세요.");
-                            return;
-                        } catch (err) {
-                            if (err.name === 'AbortError') return;
-                        }
-                    }
-
-                    // 3. Fallback for mobile browsers unsupported by Web Share API
-                    openImageModal(canvas.toDataURL('image/png'));
-
-                }, 'image/png');
-
+                scale: 2, 
+                backgroundColor: '#ffffff',
+                useCORS: true
+            }).then(canvas => {
+                wrapper.classList.remove('forced-light');
+                const link = document.createElement('a');
+                link.download = `회의록_${state.title || '미팅데이터'}.png`;
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             }).catch(err => {
                 wrapper.classList.remove('forced-light');
-                showToast('이미지 생성 실패. 다시 시도해 주세요.');
+                alert('이미지 생성 실패. 다시 시도해 주세요.');
                 console.error(err);
             });
-        }
-
-        function downloadAsTextFile() {
-            const reportText = getRawReport();
-            const fileName = `회의록_${state.title || '회의'}.txt`;
-            const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
-
-            if (isMobileDevice()) {
-                const file = new File([blob], fileName, { type: 'text/plain' });
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    navigator.share({
-                        files: [file],
-                        title: state.title || '회의록 파일',
-                        text: reportText
-                    }).catch(err => {
-                        if (err.name !== 'AbortError') console.error(err);
-                    });
-                    return;
-                }
-            }
-
-            const link = document.createElement('a');
-            link.download = fileName;
-            link.href = URL.createObjectURL(blob);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-            showToast("TXT 파일이 다운로드되었습니다.");
-        }
-
-        function openThemeModal() { document.getElementById('theme-modal').classList.add('active'); }
-        function closeThemeModal() { document.getElementById('theme-modal').classList.remove('active'); }
-        function setTheme(themeName) {
-            if (themeName === 'light') {
-                document.documentElement.removeAttribute('data-theme');
-            } else {
-                document.documentElement.setAttribute('data-theme', themeName);
-            }
-            localStorage.setItem('olive_pwa_theme', themeName);
-            closeThemeModal();
         }
     </script>
 </body>
