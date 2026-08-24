@@ -143,10 +143,10 @@
         .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
         
         input, select, textarea { 
-            width: 100%; padding: 18px; border-radius: 12px; 
+            width: 100%; padding: 18px; border-radius: 12px; gap: 12px;
             border: 2px solid transparent; background: var(--input-bg);
             color: var(--text-main); font-size: 0.90rem; outline: none;
-            gap: 6px; box-shadow: var(--shadow-inner); transition: all 0.2s;
+            box-shadow: var(--shadow-inner); transition: all 0.2s;
         }
         input:focus, textarea:focus { border-color: var(--color-primary); background: var(--bg-card); }
         input[type="datetime-local"] { -webkit-appearance: none; appearance: none; }
@@ -397,7 +397,6 @@
             </div>
             <div id="member-list" class="list-container"></div>
         </div>
-
         <div class="card">
             <h2>회의 안건 관리</h2>
             <div class="flex-row">
@@ -406,9 +405,7 @@
             </div>
             <div id="agenda-list" class="list-container"></div>
         </div>
-
         <button class="btn btn-primary" onclick="switchStep(2)">다음 단계 (안건 선택) ➔</button>
-        
         <div class="mt-20" style="text-align: center;">
             <button class="btn btn-outline text-danger" style="font-size:0.9rem; padding:12px; width: auto; margin: 0 auto; border:none; background:transparent; box-shadow:none;" onclick="requestClearCache()">
                 <i class="fa-solid fa-rotate-right"></i> 앱 데이터 초기화
@@ -432,7 +429,6 @@
             </div>
         </div>
     </div>
-
     <div id="step-write" class="hidden">
         <div class="card">
             <h2>진행 기록</h2>
@@ -447,11 +443,9 @@
     <div id="step-result" class="hidden">
         <div class="card">
             <h2>최종 회의록</h2>
-            
             <div class="capture-wrapper" id="capture-area">
                 <div class="result-view" id="result-text"></div>
             </div>
-
             <div class="grid-2" style="gap: 8px;">
                 <button class="btn btn-primary" onclick="shareNative()" style="padding: 14px 8px; font-size: 0.95rem;">
                     <i class="fa-solid fa-share-nodes"></i> 회의록 공유
@@ -466,7 +460,6 @@
                     <i class="fa-solid fa-file-lines"></i> TXT 파일 저장
                 </button>
             </div>
-            
             <div class="grid-2 mt-20" style="border-top: 2px dashed var(--border-color); padding-top: 20px;">
                 <button class="btn btn-outline" onclick="switchStep(3)"><i class="fa-solid fa-chevron-left"></i> 내용 수정</button>
                 <button class="btn btn-outline text-danger" onclick="location.reload()">새 회의 시작</button>
