@@ -144,7 +144,7 @@
         
         input, select, textarea { 
             width: 100%; padding: 12px; border-radius: 12px; 
-            border: 2px solid transparent; background: var(--input-bg); 
+            border: 8px solid transparent; background: var(--input-bg); 
             color: var(--text-main); font-size: 0.95rem; outline: none;
             box-shadow: var(--shadow-inner); transition: all 0.2s;
         }
@@ -176,7 +176,7 @@
             position: absolute;
             top: 2px;
             left: 6px;
-            width: 6px;
+            width: 12px;
             height: 12px;
             border: solid white;
             border-width: 0 2px 2px 0;
@@ -362,7 +362,7 @@
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <header>
-        <h1><i>OLIVE <span>Meeting Room</span></i></h1>
+        <h1><i><b>OLIVE</b><span>Meeting Room</span></i></h1>
         <button class="btn-outline btn-small" onclick="openThemeModal()"><i class="fa-solid fa-palette"></i> 테마</button>
     </header>
 
@@ -717,7 +717,7 @@
                 const arr = state.contents[a];
                 return `
                     <div class="agenda-write-card">
-                        <h3><i class="fa-solid fa-thumbtack"></i> ${escapeHTML(a)}</h3>
+                        <h3> 📌${escapeHTML(a)}</h3>
                         <div id="lines-${escapeHTML(a)}">
                             ${arr.map((item, i) => {
                                 return `
