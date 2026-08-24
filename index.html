@@ -292,7 +292,7 @@
         .report-agenda-title { 
             font-weight: 800; font-size: 1rem; color: var(--color-primary-dark); 
             display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
-            background: var(--bg-card); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border-color);
+            background: var(--border-color); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border-color);
         }
         .report-main-item { 
             font-weight: 800; color: var(--text-main); font-size: 0.96rem; 
@@ -789,7 +789,7 @@
             state.selected.forEach(a => {
                 html += `
                     <div class="report-agenda-block">
-                        <div class="report-agenda-title"><i class="fa-solid fa-thumbtack"></i> ${escapeHTML(a)}</div>
+                        <div class="report-agenda-title"> 📌${escapeHTML(a)}</div>
                 `;
 
                 if(state.contents[a]) {
