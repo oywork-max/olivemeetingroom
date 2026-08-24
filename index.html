@@ -13,80 +13,70 @@
     
     <style>
         /* 1. 기본 테마 (올리브/코랄) - 눈이 편안한 #9BCE26 */
-        :root {
-            --bg-body: #F7FAF5;
-            --bg-card: #FFFFFF;
-            --text-main: #2A3622;
-            --text-muted: #7E8C73;
-            --border-color: #E2EBDD;
-            --input-bg: #F2F8ED;
-            --color-primary: #9BCE26;
-            --color-primary-dark: #7CA81B;
-            --color-accent: #FF7878;
-            --shadow-sm: 0 2px 8px rgba(155, 206, 38, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(155, 206, 38, 0.15);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
+        :root, [data-theme="default"] {
+            --bg-primary: #f9f9f7;
+            --bg-card: #ffffff;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --color-olive: #9BCE26; 
+            --color-olive-dark: #7aab15;
+            --color-coral: #FF7878;
+            --border-color: #e5e5e0;
+            --input-bg: #f4f4f0;
         }
 
+        /* 2. 다크 모드 (무채색 그레이 계열) */
         [data-theme="dark"] {
-            --bg-body: #121212;
-            --bg-card: #1E1E1E;
-            --text-main: #E0E0E0;
-            --text-muted: #888888;
+            --bg-primary: #121212;
+            --bg-card: #1e1e1e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #aaaaaa;
+            --color-olive: #888888;
+            --color-olive-dark: #cccccc;
+            --color-coral: #dc3545;
             --border-color: #333333;
-            --input-bg: #1A1A1A;
-            --color-primary: #B0B0B0;
-            --color-primary-dark: #FFFFFF;
-            --color-accent: #FF6B6B;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 8px 16px -4px rgba(0, 0, 0, 0.5);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.2);
+            --input-bg: #2a2a2a;
         }
 
-        [data-theme="blue"] {
-            --bg-body: #F4F6F9;
-            --bg-card: #FFFFFF;
-            --text-main: #1C1C1D;
-            --text-muted: #6B7280;
-            --border-color: #DDE4F2;
-            --input-bg: #F8FAFC;
-            --color-primary: #2043BF;
-            --color-primary-dark: #173296;
-            --color-accent: #1C1C1D;
-            --shadow-sm: 0 2px 8px rgba(32, 67, 191, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(32, 67, 191, 0.15);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        [data-theme="yellow"] {
-            --bg-body: #FFFDF5;
-            --bg-card: #FFFFFF;
-            --text-main: #160C28;
-            --text-muted: #6B6875;
-            --border-color: #F2EACC;
-            --input-bg: #FCFAF2;
-            --color-primary: #EDC65B;
-            --color-primary-dark: #D4B04C;
-            --color-accent: #160C28;
-            --shadow-sm: 0 2px 8px rgba(237, 198, 91, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(237, 198, 91, 0.15);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
+        /* 3. 퍼플/핑크 테마 */
         [data-theme="purple"] {
-            --bg-body: #F8F6FA;
-            --bg-card: #FFFFFF;
-            --text-main: #332A3B;
-            --text-muted: #8B8096;
-            --border-color: #E7E1EE;
-            --input-bg: #F9F8FC;
-            --color-primary: #AD8CEB;
-            --color-primary-dark: #8F6DCB;
-            --color-accent: #FF94B8;
-            --shadow-sm: 0 2px 8px rgba(173, 140, 235, 0.1);
-            --shadow-md: 0 8px 16px -4px rgba(173, 140, 235, 0.15);
-            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.02);
+            --bg-primary: #f8f5fa;
+            --bg-card: #ffffff;
+            --text-primary: #332b3b;
+            --text-secondary: #7f748a;
+            --color-olive: #9b59b6;
+            --color-olive-dark: #71368a;
+            --color-coral: #e84393;
+            --border-color: #eadced;
+            --input-bg: #f3ebf5;
         }
+
+        /* 4. 블루/그레이 테마 (요청 헥스코드 반영) */
+        [data-theme="blue"] {
+            --bg-primary: #f0f2f5;
+            --bg-card: #ffffff;
+            --text-primary: #1C1C1D;
+            --text-secondary: #666666;
+            --color-olive: #2043BF;
+            --color-olive-dark: #153090;
+            --color-coral: #dc3545;
+            --border-color: #d1d5db;
+            --input-bg: #e4e6eb;
+        }
+
+        /* 5. 옐로우/다크퍼플 테마 (요청 헥스코드 반영) */
+        [data-theme="yellow"] {
+            --bg-primary: #160C28;
+            --bg-card: #231640;
+            --text-primary: #ffffff;
+            --text-secondary: #b3a9c4;
+            --color-olive: #EDC65B;
+            --color-olive-dark: #c4a13d;
+            --color-coral: #ff7878;
+            --border-color: #3a2760;
+            --input-bg: #2d1d52;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, system-ui, sans-serif; }
         
         body { 
@@ -537,7 +527,7 @@
 
         // --- 결과 및 내보내기 ---
         function getRawReport() {
-            let res = `📝 [회의록] ${state.title || '미팅데이터'}\n`;
+            let res = `📝 [회의록] ${state.title || '중례'}\n`;
             res += `일시: ${document.getElementById('meet-date').value.replace('T',' ')}\n`;
             res += `참석자: ${state.members.length > 0 ? state.members.join(', ') : '-'}\n`;
             res += `--------------------------\n`;
@@ -623,7 +613,7 @@
             }).then(canvas => {
                 wrapper.classList.remove('forced-light');
                 const link = document.createElement('a');
-                link.download = `회의록_${state.title || '미팅데이터'}.png`;
+                link.download = `회의록_${state.title || '중례'}.png`;
                 link.href = canvas.toDataURL('image/png');
                 document.body.appendChild(link);
                 link.click();
