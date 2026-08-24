@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         :root {
             --bg-body: #F7FAF5;
@@ -106,9 +107,9 @@
         
         h1 { font-size: 1.25rem; color: var(--color-primary-dark); font-weight: 800; letter-spacing: -0.5px; }
         [data-theme="dark"] h1 { color: var(--color-primary); }
-        h1 span { color: var(--color-accent); font-weight: 700; }
+        h1 span { color: var(--color-accent); font-weight: 800; }
 
-        h2 { font-size: 1.05rem; color: var(--text-main); font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        h2 { font-size: 1.05rem; color: var(--text-main); font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         h2::before { content: ''; display: block; width: 5px; height: 16px; background: var(--color-primary); border-radius: 4px; }
 
         .step-indicator { 
@@ -176,8 +177,8 @@
             position: absolute;
             top: 2px;
             left: 6px;
-            width: 12px;
-            height: 12px;
+            width: 6px;
+            height: 6px;
             border: solid white;
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
