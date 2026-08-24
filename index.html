@@ -176,7 +176,7 @@
             content: '';
             position: absolute;
             top: 2px;
-            left: 6px;
+            left: 3px;
             width: 6px;
             height: 6px;
             border: solid white;
@@ -223,7 +223,7 @@
         .select-item-label span { font-size: 0.95rem; font-weight: 600; }
 
         .agenda-write-card { 
-            border: 2px solid var(--border-color); border-radius: 12px; padding: 12px; 
+            border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; 
             margin-bottom: 12px; background: var(--bg-card); 
         }
         .agenda-write-card h3 { 
@@ -290,13 +290,13 @@
         
         .report-agenda-block { margin-bottom: 16px; }
         .report-agenda-title { 
-            font-weight: 800; font-size: 1rem; color: var(--color-primary-dark); 
+            font-weight: 800; font-size: 0.85rem; color: var(--color-primary-dark); 
             display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
-            background: var(--border-color); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border-color);
+            background: var(--bg-body); padding: 3px 3px; border-radius: 8px; border: 1px solid var(--bg-body);
         }
         .report-main-item { 
             font-weight: 800; color: var(--text-main); font-size: 0.96rem; 
-            margin-top: 8px; margin-bottom: 4px; display: flex; align-items: flex-start; gap: 6px; 
+            margin-top: 2px; margin-bottom: 4px; display: flex; align-items: flex-start; gap: 6px; 
         }
         .report-main-item .bullet { color: var(--color-primary-dark); font-weight: 900; }
         .report-sub-item { 
@@ -718,7 +718,7 @@
                 const arr = state.contents[a];
                 return `
                     <div class="agenda-write-card">
-                        <h3> 📌${escapeHTML(a)}</h3>
+                        <h3>📌${escapeHTML(a)}</h3>
                         <div id="lines-${escapeHTML(a)}">
                             ${arr.map((item, i) => {
                                 return `
@@ -726,7 +726,7 @@
                                         <button class="btn-tree-toggle" onclick="toggleTreeIndent('${escapeHTML(a)}', ${i})" title="${item.indent ? '주요 내용으로 변경' : '세부 내용으로 변경'}">
                                             <i class="fa-solid ${item.indent ? 'fa-angle-right' : 'fa-list-ul'}"></i>
                                         </button>
-                                        <textarea placeholder="${item.indent ? '세부 내용을 입력하세요' : '주요 내용을 입력하세요 (자동 볼드적용)'}" oninput="updateLine('${escapeHTML(a)}', ${i}, this.value)">${escapeHTML(item.text)}</textarea>
+                                        <textarea placeholder="${item.indent ? '세부 내용을 입력하세요' : '주요 내용을 입력하세요 (굵게)'}" oninput="updateLine('${escapeHTML(a)}', ${i}, this.value)">${escapeHTML(item.text)}</textarea>
                                         <div class="line-controls-right">
                                             <button class="btn-del-line" onclick="delLine('${escapeHTML(a)}', ${i})" title="항목 삭제"><i class="fa-solid fa-minus"></i></button>
                                         </div>
